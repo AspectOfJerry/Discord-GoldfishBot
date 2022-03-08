@@ -12,7 +12,7 @@ const client = new Discord.Client({
 })
 
 client.on('ready', () => {
-    console.log("Jerry Bot is now online.")
+    console.log("Goldfish Bot is now online.")
 
     let handler = require('./command_handler')
 
