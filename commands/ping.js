@@ -9,7 +9,8 @@ module.exports = {
                 .setDescription("This command displays the bot's latency and the websocket server's latency in milliseconds.")
                 .addField(`Usage`, "`%ping`", true)
                 .addField(`Aliases`, "`latency`", true)
-                .addField("Stats for nerds", "Lines: `36`; File size: `~1.65` KB", false)
+                .addField(`Excpected arguments`, "0", false)
+                .setFooter("ping.js; Lines: 37; File size: ~1.7 KB")
 
             message.channel.send({embeds: [help_command]})
             return;
