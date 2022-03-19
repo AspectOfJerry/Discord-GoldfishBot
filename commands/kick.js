@@ -2,7 +2,7 @@ module.exports = {
     callback: (message, Discord, client, ...args) => {
         //Command information
         const COMMAND_NAME = "kick";
-        const ROLE_REQUIRED = "PL2";
+        const ROLE_REQUIRED = "Mod";
         const EXCPECTED_ARGUMENTS = 1;
         const OPTIONAL_ARGUMENTS = 1;
 
@@ -30,26 +30,26 @@ module.exports = {
 
         //Declaring functions
         function GetMessageMemberHighestRole(message) {
-            if(message.member.roles.cache.find(role => role.name == "PL0")) {
+            if(message.member.roles.cache.find(role => role.name == "Owner")) {
                 return 0;
-            } else if(message.member.roles.cache.find(role => role.name == "PL1")) {
+            } else if(message.member.roles.cache.find(role => role.name == "Admin")) {
                 return 1;
-            } else if(message.member.roles.cache.find(role => role.name == "PL2")) {
+            } else if(message.member.roles.cache.find(role => role.name == "Mod")) {
                 return 2;
-            } else if(message.member.roles.cache.find(role => role.name == "PL3")) {
+            } else if(message.member.roles.cache.find(role => role.name == "staff")) {
                 return 3;
             } else {
                 return null;
             }
         }
         function GetMemberTargetHighestRole(memberTarget) {
-            if(memberTarget.roles.cache.find(role => role.name == "PL0")) {
+            if(memberTarget.roles.cache.find(role => role.name == "Owner")) {
                 return 0;
-            } else if(memberTarget.roles.cache.find(role => role.name == "PL1")) {
+            } else if(memberTarget.roles.cache.find(role => role.name == "Admin")) {
                 return 1;
-            } else if(memberTarget.roles.cache.find(role => role.name == "PL2")) {
+            } else if(memberTarget.roles.cache.find(role => role.name == "Mod")) {
                 return 2;
-            } else if(memberTarget.roles.cache.find(role => role.name == "PL3")) {
+            } else if(memberTarget.roles.cache.find(role => role.name == "staff")) {
                 return 3;
             } else {
                 return null;

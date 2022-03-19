@@ -5,7 +5,7 @@ module.exports = {
     callback: async (message, Discord, client, ...args) => {
         //Command information
         const COMMAND_NAME = "ip_location";
-        const ROLE_REQUIRED = "PL0";
+        const ROLE_REQUIRED = "Owner";
         const EXCPECTED_ARGUMENTS = 1;
         const OPTIONAL_ARGUMENTS = 0;
 
