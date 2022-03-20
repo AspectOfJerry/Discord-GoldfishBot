@@ -40,14 +40,11 @@ module.exports = {
         let ipAdressLatitude;
         let ipAdressLongitude;
         let ipAdressCapital;
-        let ipAdressLanguageName;
-        let ipAdressLanguageNative;
-        let ipAdressCountryFlagURL;
 
         //Declaring functions
 
         //Checks
-        if(!message.member.user.id == "611633988515266562") {
+        if(message.member.user.id != "611633988515266562") {
             const error_permissions = new Discord.MessageEmbed()
                 .setColor('#ff2020')
                 .setThumbnail(`${message.author.displayAvatarURL({dynamic: true, size: 16})}`)
@@ -84,7 +81,6 @@ module.exports = {
                 ipAdressLatitude = data.latitude;
                 ipAdressLongitude = data.longitude;
                 ipAdressCapital = data.location.capital;
-                ipAdressCountryFlagURL = data.country_flag;
 
                 const ipAdressInfo = new Discord.MessageEmbed()
                     .setColor('#20ff20')
@@ -99,6 +95,7 @@ module.exports = {
                     .addField('IP Adress city', `${ipAdressCity}`, true)
                     .addField('IP Adress longitude', `${ipAdressLongitude}`, false)
                     .addField('IP Adress latitude', `${ipAdressLatitude}`, false)
+                    .addField('IP Adress zip', `${ipAdressZipCode}`)
 
                 message.channel.send({embeds: [ipAdressInfo]})
 
