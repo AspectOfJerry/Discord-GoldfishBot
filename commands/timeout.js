@@ -10,15 +10,16 @@ module.exports = {
         if(args[0] == '?') {
             const help_command = new Discord.MessageEmbed()
                 .setColor('#2020ff')
-                .setThumbnail(`${message.author.displayAvatarURL({dynamic: true, size: 32})}`)
-                .setTitle(`%${COMMAND_NAME} command help (${ROLE_REQUIRED})`)
+                .setAuthor({name: "./commands/timeout.js; Lines: 199; File size: ~10.2 KB", iconURL: "https://winaero.com/blog/wp-content/uploads/2018/12/file-explorer-folder-libraries-icon-18298.png"})
+                .setTitle(`,${COMMAND_NAME} command help (${ROLE_REQUIRED})`)
                 .setDescription('This command times a guild member out.')
-                .addField(`Usage`, "`" + `%${COMMAND_NAME}` + " <user> <time> (<reason>)" + "`", false)
-                .addField(`Excpected arguments`, `${EXCPECTED_ARGUMENTS}`, true)
-                .addField(`Optional arguments`, `${OPTIONAL_ARGUMENTS}`, true)
-                .addField(`Note`, "The timeout duration must be within the range **1** - **3600** seconds.")
+                .addField(`Usage`, "`" + `,${COMMAND_NAME}` + " <user> <time> (<reason>)" + "`", false)
+                .addField(`Aliases`, "`freeze`", false)
+                .addField(`Excpected arguments`, `${EXCPECTED_ARGUMENTS} case-sensitive`, true)
+                .addField(`Optional arguments`, `${OPTIONAL_ARGUMENTS} case-insensitive`, true)
+                .addField(`Notes`, "The timeout duration must be within the range **1** - **3600** seconds.")
                 .addField('Related commands', "`mute`", false)
-                .setFooter({text: "./commands/timeout.js; Lines: 198; File size: ~10.0 KB"})
+                .setFooter({text: `Executed by: ${message.author.tag}`, iconURL: message.author.displayAvatarURL({dynamic: true})})
 
             message.channel.send({embeds: [help_command]})
             return;
@@ -127,7 +128,7 @@ module.exports = {
             const error_missing_arguments = new Discord.MessageEmbed()
                 .setColor('ff2020')
                 .setThumbnail(`${message.author.displayAvatarURL({dynamic: true, size: 16})}`)
-                .setDescription(`**Error:** Excpected **${EXCPECTED_ARGUMENTS}** arguments but only provided **0**.` + " Use " + "`" + `%${COMMAND_NAME} ?` + "`" + " for help.")
+                .setDescription(`**Error:** Excpected **${EXCPECTED_ARGUMENTS}** arguments but only provided **0**.` + " Use " + "`" + `,${COMMAND_NAME} ?` + "`" + " for help.")
                 .setFooter({text: "Please provide a member to timeout."})
 
             message.channel.send({embeds: [error_missing_arguments]})
@@ -139,7 +140,7 @@ module.exports = {
                 .setColor('ff2020')
                 .setThumbnail(`${message.author.displayAvatarURL({dynamic: true, size: 16})}`)
                 .setDescription("**Error:** Please provide a valid member to timeout.")
-                .setFooter({text: "Use " + "`" + ` % ${COMMAND_NAME} ? ` + "`" + " for help."})
+                .setFooter({text: "Use " + "`" + ` , ${COMMAND_NAME} ? ` + "`" + " for help."})
 
             message.channel.send({embeds: [reference_error_target]})
             return;
@@ -159,7 +160,7 @@ module.exports = {
             const error_missing_arguments = new Discord.MessageEmbed()
                 .setColor('ff2020')
                 .setThumbnail(`${message.author.displayAvatarURL({dynamic: true, size: 16})}`)
-                .setDescription(`**Error:** Excpected **${EXCPECTED_ARGUMENTS}** arguments but only provided **1**.` + " Use " + "`" + `%${COMMAND_NAME} ?` + "`" + " for help.")
+                .setDescription(`**Error:** Excpected **${EXCPECTED_ARGUMENTS}** arguments but only provided **1**.` + " Use " + "`" + `,${COMMAND_NAME} ?` + "`" + " for help.")
                 .setFooter({text: "Please provide a timeout duration in seconds."})
 
             message.channel.send({embeds: [error_missing_arguments]})
@@ -169,7 +170,7 @@ module.exports = {
             const type_error_argument_isNaN = new Discord.MessageEmbed()
                 .setColor('ff2020')
                 .setThumbnail(`${message.author.displayAvatarURL({dynamic: true, size: 16})}`)
-                .setDescription("**TypeError:** Unexpected argument type. Argument 1 (`" + `${args[1]}` + '`) must be an `int` (integer).' + " Use " + "`" + `%${COMMAND_NAME} ?` + "`" + " for help.")
+                .setDescription("**TypeError:** Unexpected argument type. Argument 1 (`" + `${args[1]}` + '`) must be an `int` (integer).' + " Use " + "`" + `,${COMMAND_NAME} ?` + "`" + " for help.")
                 .setFooter({text: "Please provide a valid timeout duration in seconds."})
 
             message.channel.send({embeds: [type_error_argument_isNaN]})
@@ -179,7 +180,7 @@ module.exports = {
             const range_error = new Discord.MessageEmbed()
                 .setColor('#ff2020')
                 .setThumbnail(`${message.author.displayAvatarURL({dynamic: true, size: 16})}`)
-                .setDescription("**RangeError:** Timeout duration must be within the range **1** - **3600** seconds." + " Use " + "`" + `%${COMMAND_NAME} ?` + "`" + " for help.")
+                .setDescription("**RangeError:** Timeout duration must be within the range **1** - **3600** seconds." + " Use " + "`" + `,${COMMAND_NAME} ?` + "`" + " for help.")
 
             message.channel.send({embeds: [range_error]})
             return;

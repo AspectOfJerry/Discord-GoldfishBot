@@ -10,14 +10,14 @@ module.exports = {
         if(args[0] == '?') {
             const help_command = new Discord.MessageEmbed()
                 .setColor('#2020ff')
-                .setThumbnail(`${message.author.displayAvatarURL({dynamic: true, size: 32})}`)
-                .setTitle(`%${COMMAND_NAME} command help (${ROLE_REQUIRED})`)
+                .setAuthor({name: "./commands/ban.js; Lines: 173; File size: ~8.3 KB", iconURL: "https://winaero.com/blog/wp-content/uploads/2018/12/file-explorer-folder-libraries-icon-18298.png"})
+                .setTitle(`,${COMMAND_NAME} command help (${ROLE_REQUIRED})`)
                 .setDescription('This command bans a user from the guild.')
-                .addField(`Usage`, "`" + `%${COMMAND_NAME}` + " <user> (<reason>)" + "`", false)
-                .addField(`Excpected arguments`, `${EXCPECTED_ARGUMENTS}`, true)
-                .addField(`Optional arguments`, `${OPTIONAL_ARGUMENTS}`, true)
+                .addField(`Usage`, "`" + `,${COMMAND_NAME}` + " <user> (<reason>)" + "`", false)
+                .addField(`Excpected arguments`, `${EXCPECTED_ARGUMENTS} case-sensitive`, true)
+                .addField(`Optional arguments`, `${OPTIONAL_ARGUMENTS} case-insensitive`, true)
                 .addField('Related commands', "`kick`", false)
-                .setFooter({text: "./commands/ban.js; Lines: 173; File size: ~8.23 KB"})
+                .setFooter({text: `Executed by: ${message.author.tag}`, iconURL: message.author.displayAvatarURL({dynamic: true})})
 
             message.channel.send({embeds: [help_command]})
             return;
@@ -131,7 +131,7 @@ module.exports = {
                 .setColor('#ff2020')
                 .setThumbnail(`${message.author.displayAvatarURL({dynamic: true, size: 16})}`)
                 .setDescription(`**Error:** Please provide a member to ban. Excpected **${EXCPECTED_ARGUMENTS}** arguments but only provided **0**.`)
-                .setFooter({text: "Use " + "`" + `%${COMMAND_NAME} ?` + "`" + " for help."})
+                .setFooter({text: "Use " + "`" + `,${COMMAND_NAME} ?` + "`" + " for help."})
 
             message.channel.send({embeds: [error_missing_arguments]})
             return;
@@ -142,7 +142,7 @@ module.exports = {
                 .setColor('ff2020')
                 .setThumbnail(`${message.author.displayAvatarURL({dynamic: true, size: 16})}`)
                 .setDescription("**ReferenceError:** Please provide a valid member to ban.")
-                .setFooter({text: "Use " + "`" + `%${COMMAND_NAME} ?` + "`" + " for help."})
+                .setFooter({text: "Use " + "`" + `,${COMMAND_NAME} ?` + "`" + " for help."})
 
             message.channel.send({embeds: [reference_error_target]})
             return;
