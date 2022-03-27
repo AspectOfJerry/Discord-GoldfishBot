@@ -2,7 +2,7 @@ module.exports = {
     callback: (message, Discord, client, ...args) => {
         //Command information
         const COMMAND_NAME = "kick";
-        const ROLE_REQUIRED = "Mod";
+        const REQUIRED_ROLE = "Mod";
         const EXCPECTED_ARGUMENTS = 1;
         const OPTIONAL_ARGUMENTS = 1;
 
@@ -11,7 +11,7 @@ module.exports = {
             const help_command = new Discord.MessageEmbed()
                 .setColor('#2020ff')
                 .setAuthor({name: "./commands/kick.js; Lines: 172; File size: ~8.3 KB", iconURL: "https://winaero.com/blog/wp-content/uploads/2018/12/file-explorer-folder-libraries-icon-18298.png"})
-                .setTitle(`,${COMMAND_NAME} command help (${ROLE_REQUIRED})`)
+                .setTitle(`,${COMMAND_NAME} command help (${REQUIRED_ROLE})`)
                 .setDescription('This command kicks a user from the guild.')
                 .addField(`Usage`, "`" + `,${COMMAND_NAME}` + " <user> (<reason>)" + "`", false)
                 .addField(`Excpected arguments`, `${EXCPECTED_ARGUMENTS} case-sensitive`, true)
@@ -117,7 +117,7 @@ module.exports = {
         }
 
         //Checks
-        if(!message.member.roles.cache.find(role => role.name == ROLE_REQUIRED)) {
+        if(!message.member.roles.cache.find(role => role.name == REQUIRED_ROLE)) {
             const error_permissions = new Discord.MessageEmbed()
                 .setColor('#ff2020')
                 .setThumbnail(`${message.author.displayAvatarURL({dynamic: true, size: 16})}`)
