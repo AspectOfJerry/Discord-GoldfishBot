@@ -2,7 +2,7 @@ module.exports = {
     callback: (message, Discord, client, ...args) => {
         //Command information
         const COMMAND_NAME = "stop";
-        const REQUIRED_ROLE = "PL3";
+        const REQUIRED_ROLE = "staff";
         const EXCPECTED_ARGUMENTS = 0;
         const OPTIONAL_ARGUMENTS = 1;
 
@@ -10,7 +10,7 @@ module.exports = {
         if(args[0] == '?') {
             const help_command = new Discord.MessageEmbed()
                 .setColor('#2020ff')
-                .setAuthor({name: "./commands/stop.js; Lines: 196; File size: ~9.2 KB", iconURL: "https://winaero.com/blog/wp-content/uploads/2018/12/file-explorer-folder-libraries-icon-18298.png"})
+                .setAuthor({name: "./commands/stop.js; Lines: 169; File size: ~9.2 KB", iconURL: "https://winaero.com/blog/wp-content/uploads/2018/12/file-explorer-folder-libraries-icon-18298.png"})
                 .setTitle(`,${COMMAND_NAME} command help (${REQUIRED_ROLE})`)
                 .setDescription('This command stops the bot.')
                 .addField(`Usage`, "`" + `,${COMMAND_NAME}` + " (<reason>)" + "`", false)
@@ -103,7 +103,7 @@ module.exports = {
                 }
             })
         } else if(args[0]) {
-            let stopReason = args[0];
+            let stopReason = args.join(" ");
             let filter = m => m.author.id === message.author.id;
             const warning_stopping_bot = new Discord.MessageEmbed()
                 .setColor('ffff20')
@@ -150,10 +150,10 @@ module.exports = {
                         .then(() => {
                             const destroying_client = new Discord.MessageEmbed()
                                 .setColor('ff20ff')
-                                .setAuthor({name: "Client"})
+                                // .setAuthor({name: "Client"})
                                 .setDescription("Destroying the client and terminating the NodeJS process with code 0...")
-                                .setFooter({text: `${message.author.tag} • ${COMMAND_NAME}`, iconURL: message.author.displayAvatarURL({dynamic: true})})
-                                .setTimestamp();
+                                // .setFooter({text: `${message.author.tag} • ${COMMAND_NAME}`, iconURL: message.author.displayAvatarURL({dynamic: true})})
+                                // .setTimestamp();
 
                             message.channel.send({embeds: [destroying_client]})
                                 .then(() => {
