@@ -25,12 +25,23 @@ module.exports = (client) => {
     console.log(commands)
 
     client.on('messageCreate', (message) => {
+        if(message.author.bot) {
+            return;
+        }
+        //Goldfish ASMR Detection Module
+        if(message.content.includes("https://www.youtube.com/watch" || "https://youtu.be") || message.content.includes("https://youtu.be")) {
+            const args = message.content.split(/ +/)
+            require('./events/asmr_video_detection_module')(message, Discord, client, ...args)
+            //return;
+        }
+
+
+        const args = message.content.slice(1).split(/ +/)
 
         if(message.author.bot || !message.content.startsWith(command_prefix)) {
             return;
         }
 
-        const args = message.content.slice(1).split(/ +/)
         const command_name = args.shift()
 
         if(!commands[command_name]) {
