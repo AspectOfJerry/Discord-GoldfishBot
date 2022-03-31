@@ -6,7 +6,7 @@ module.exports = {
 
         //Checks
         if(message.member.user.id !== "611633988515266562") {
-            message.reply("you're not jerry, you can't use the command. so sad D:. it's a temporary command though")
+            message.reply("You cannot use this command. Only Jerry#3756 can!")
             return;
         }
         //Code

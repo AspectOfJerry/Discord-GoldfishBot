@@ -11,7 +11,7 @@ module.exports = (message, Discord, client, ...args) => {
                         .setColor("ff2020")
                         .setAuthor({name: "MasterWarning"})
                         .setTitle("Goldfish ASMR Video Detection Module alert")
-                        .setDescription(`<@${message.member.id}> has posted a link redirecting to an ASMR video.`)
+                        .setDescription(`<@${message.member.user.id}> has posted a link redirecting to an ASMR video.`)
                         // .addField("Username", `${message.author.username}`, true)
                         // .addField("Discriminator", `${message.author.discriminator}`, true)
                         // .addField("User ID", `${message.author.id}`, true)
