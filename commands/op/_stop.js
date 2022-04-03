@@ -1,8 +1,8 @@
 module.exports = {
     callback: (message, Discord, client, ...args) => {
         //Command information
-        const COMMAND_NAME = "stop";
-        const REQUIRED_ROLE = "staff";
+        const COMMAND_NAME = "_stop";
+        const REQUIRED_ROLE = "Jerry#3756";
         const EXCPECTED_ARGUMENTS = 0;
         const OPTIONAL_ARGUMENTS = 1;
 
@@ -10,7 +10,7 @@ module.exports = {
         if(args[0] == '?') {
             const help_command = new Discord.MessageEmbed()
                 .setColor('#2020ff')
-                .setAuthor({name: "dir: ./commands/stop.js; Lines: 140; File size: ~7.4 KB"})
+                .setAuthor({name: "dir: ./commands/op/_stop.js; Lines: 141; File size: ~7.5 KB"})
                 .setTitle(`,${COMMAND_NAME} command help (${REQUIRED_ROLE})`)
                 .setDescription('This command stops the bot.')
                 .addField(`Usage`, "`" + `,${COMMAND_NAME}` + " (<reason>)" + "`", false)
@@ -30,11 +30,12 @@ module.exports = {
         //Declaring functions
 
         //Checks
-        if(!message.member.roles.cache.find(role => role.name == REQUIRED_ROLE)) {
+        if(message.member.user.id !== "611633988515266562") {
             const error_permissions = new Discord.MessageEmbed()
                 .setColor('#ff2020')
                 .setAuthor({name: "PermissionError"})
-                .setDescription("I'm sorry but you do not have the permissions to perform this command. Please contact the server administrators if you believe that this is an error.")
+                .setDescription("I'm sorry but you do not have the permissions to perform this command. Please contact the server administrators if you believe that this is an error.\n" +
+                    "__This command can only be used by Jerry#3756.__ For staff members, please use `stop` (not `_stop`).")
                 .setFooter({text: `${message.author.tag} • Use ',${COMMAND_NAME} ?' for help`, iconURL: message.author.displayAvatarURL({dynamic: true})})
                 .setTimestamp();
 

@@ -10,7 +10,7 @@ module.exports = {
         if(args[0] == '?') {
             const help_command = new Discord.MessageEmbed()
                 .setColor('#2020ff')
-                .setAuthor({name: "./commands/say.js; Lines: 55; File size: ~2.3 KB"})
+                .setAuthor({name: "dir: ./commands/say.js; Lines: 55; File size: ~2.3 KB"})
                 .setTitle(`,${COMMAND_NAME} command help (${REQUIRED_ROLE})`)
                 .setDescription('This command sends a message in the current channel.')
                 .addField(`Usage`, "`" + `,${COMMAND_NAME}` + " <string>" + "`", false)

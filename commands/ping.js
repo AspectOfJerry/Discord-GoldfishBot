@@ -10,7 +10,7 @@ module.exports = {
         if(args[0] == '?') {
             const help_command = new Discord.MessageEmbed()
                 .setColor('#2020ff')
-                .setAuthor({name: "./commands/ping.js; Lines: 51; File size: ~2.4 KB"})
+                .setAuthor({name: "dir: ./commands/ping.js; Lines: 51; File size: ~2.4 KB"})
                 .setTitle(`,${COMMAND_NAME} command help (${REQUIRED_ROLE})`)
                 .setDescription("This command displays the client's latency as well as the websocket server's latency in milliseconds.")
                 .addField(`Usage`, "`" + `,${COMMAND_NAME}` + "`", false)

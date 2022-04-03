@@ -10,7 +10,7 @@ module.exports = {
         if(args[0] == '?') {
             const help_command = new Discord.MessageEmbed()
                 .setColor('#2020ff')
-                .setAuthor({name: "./commands/timeout.js; Lines: 219; File size: ~11.0 KB"})
+                .setAuthor({name: "dir: ./commands/timeout.js; Lines: 219; File size: ~11.0 KB"})
                 .setTitle(`,${COMMAND_NAME} command help (${REQUIRED_ROLE})`)
                 .setDescription('This command times a guild member out.')
                 .addField(`Usage`, "`" + `,${COMMAND_NAME}` + " <user> <time> (<reason>)" + "`", false)
