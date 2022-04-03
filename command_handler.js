@@ -28,19 +28,19 @@ module.exports = (client) => {
         if(message.author.bot) {
             return;
         }
-        //Goldfish ASMR Detection Module
-        if(message.content.includes("https://www.youtube.com/watch" || "https://youtu.be") || message.content.includes("https://youtu.be")) {
+        //Goldfish Video Detection Module
+        if(message.content.includes("https://www.youtube.com/watch") || message.content.includes("https://youtu.be")) {
             const args = message.content.split(/ +/)
-            require('./events/asmr_video_detection_module')(message, Discord, client, ...args)
-            //return;
+            require('./events/rickroll_detection_module')(message, Discord, client, ...args)
+            require('./events/asmr_detection_module')(message, Discord, client, ...args)
         }
 
-
-        const args = message.content.slice(1).split(/ +/)
 
         if(message.author.bot || !message.content.startsWith(command_prefix)) {
             return;
         }
+
+        const args = message.content.slice(1).split(/ +/)
 
         const command_name = args.shift()
 

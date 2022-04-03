@@ -7,22 +7,22 @@ module.exports = (message, Discord, client, ...args) => {
 
             ytdl.getInfo(`${videoLink}`).then(response => {
                 const videoTitle = response.videoDetails.title;
-                if(videoTitle.toUpperCase().includes("ASMR")) {
-                    const goldfish_asmr_detection_module = new Discord.MessageEmbed()
+                if(videoTitle.toUpperCase().includes("RICK") && videoTitle.toUpperCase().includes("ROLL") || videoTitle.toUpperCase().includes("RICK") && videoTitle.toUpperCase().includes("ASTLEY")) {
+                    const goldfish_rickroll_detection_module = new Discord.MessageEmbed()
                         .setColor("ff2020")
                         .setAuthor({name: "MasterWarning"})
-                        .setTitle("Goldfish ASMR Video Detection Module alert")
-                        .setDescription(`<@${message.member.user.id}> has posted a link redirecting to an ASMR video.`)
+                        .setTitle("Goldfish Rick Roll Detection Module alert")
+                        .setDescription(`<@${message.member.user.id}> has posted a link redirecting to a Rick Roll video.`)
                         // .addField("Username", `${message.author.username}`, true)
                         // .addField("Discriminator", `${message.author.discriminator}`, true)
                         // .addField("User ID", `${message.author.id}`, true)
                         .addField("Timestamp (message.createdAt)", `${message.createdAt}`, false)
                         .addField("Video Title", `${videoTitle}`, false)
                         .addField("Video URL", `${videoLink}`, false)
-                        .setFooter({text: `Goldfish ASMR Videos Detection Module (GAVDM)`})
+                        .setFooter({text: `Goldfish Rick Roll Detection Module (GRRDM)`})
                         .setTimestamp();
 
-                    message.reply({embeds: [goldfish_asmr_detection_module]})
+                    message.reply({embeds: [goldfish_rickroll_detection_module]})
                 }
             }).catch(console.error)
         } else {
