@@ -10,16 +10,16 @@ module.exports = {
         if(args[0] == '?') {
             const help_command = new Discord.MessageEmbed()
                 .setColor('#2020ff')
-                .setAuthor({name: "./commands/kick.js; Lines: 173; File size: ~8.4 KB", iconURL: "https://winaero.com/blog/wp-content/uploads/2018/12/file-explorer-folder-libraries-icon-18298.png"})
+                .setAuthor({name: "dir: ./commands/kick.js; Lines: 181; File size: ~8.9 KB"})
                 .setTitle(`,${COMMAND_NAME} command help (${REQUIRED_ROLE})`)
                 .setDescription('This command kicks a user from the guild.')
                 .addField(`Usage`, "`" + `,${COMMAND_NAME}` + " <user> (<reason>)" + "`", false)
-                .addField(`Excpected arguments`, `${EXCPECTED_ARGUMENTS} case-sensitive`, true)
-                .addField(`Optional arguments`, `${OPTIONAL_ARGUMENTS} case-insensitive`, true)
+                .addField(`Excpected arguments`, `${EXCPECTED_ARGUMENTS}`, true)
+                .addField(`Optional arguments`, `${OPTIONAL_ARGUMENTS}`, true)
                 .addField('Related commands', "`ban`", false)
                 .setFooter({text: `${message.author.tag} • ${COMMAND_NAME}`, iconURL: message.author.displayAvatarURL({dynamic: true})})
                 .setTimestamp();
-            
+
             message.channel.send({embeds: [help_command]})
             return;
         }
@@ -74,7 +74,7 @@ module.exports = {
                     .setFooter({text: "Your role must be higher than the targeted member's role."})
                     .setFooter({text: `${message.author.tag} • Use ',${COMMAND_NAME} ?' for help`, iconURL: message.author.displayAvatarURL({dynamic: true})})
                     .setTimestamp();
-                
+
                 message.channel.send({embeds: [error_equal_roles]})
                 return;
             } else if(verdict == "yes") {
@@ -87,7 +87,7 @@ module.exports = {
                             .setDescription(`<@${message.member.user.id}> kicked <@${memberTarget.user.id}>.`)
                             .setFooter({text: `${message.author.tag} • ${COMMAND_NAME}`, iconURL: message.author.displayAvatarURL({dynamic: true})})
                             .setTimestamp();
-                        
+
                         message.channel.send({embeds: [success_kick]})
                         return;
                     })
@@ -113,7 +113,7 @@ module.exports = {
                     .setDescription(`Your role is lower then <@${memberTarget.user.id}>'s role.`)
                     .setFooter({text: `${message.author.tag} • Use ',${COMMAND_NAME} ?' for help`, iconURL: message.author.displayAvatarURL({dynamic: true})})
                     .setTimestamp();
-                
+
                 message.channel.send({embeds: [error_role_too_low]})
                 return;
             }
@@ -127,7 +127,7 @@ module.exports = {
                 .setDescription("I'm sorry but you do not have the permissions to perform this command. Please contact the server administrators if you believe that this is an error.")
                 .setFooter({text: `${message.author.tag} • Use ',${COMMAND_NAME} ?' for help`, iconURL: message.author.displayAvatarURL({dynamic: true})})
                 .setTimestamp();
-            
+
             message.channel.send({embeds: [error_permissions]})
             return;
         }
@@ -139,7 +139,7 @@ module.exports = {
                     "Please provide a member to kick.")
                 .setFooter({text: `${message.author.tag} • Use ',${COMMAND_NAME} ?' for help`, iconURL: message.author.displayAvatarURL({dynamic: true})})
                 .setTimestamp();
-            
+
             message.channel.send({embeds: [error_missing_arguments]})
             return;
         }
@@ -152,7 +152,7 @@ module.exports = {
                     "Please provide a vavlid member to kick.")
                 .setFooter({text: `${message.author.tag} • Use ',${COMMAND_NAME} ?' for help`, iconURL: message.author.displayAvatarURL({dynamic: true})})
                 .setTimestamp();
-            
+
             message.channel.send({embeds: [reference_error_target]})
             return;
         }
@@ -164,7 +164,7 @@ module.exports = {
                 .setDescription('You cannot use this command on yourself.')
                 .setFooter({text: `${message.author.tag} • Use ',${COMMAND_NAME} ?' for help`, iconURL: message.author.displayAvatarURL({dynamic: true})})
                 .setTimestamp();
-            
+
             message.channel.send({embeds: [error_cannot_use_on_self]})
             return;
         }
