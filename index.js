@@ -1,5 +1,8 @@
 const Discord = require('discord.js')
+const {Collection} = require('discocrd.js')
 const {Intents} = Discord
+const {REST} = require('@discordjs/rest')
+const {Routes} = require('@discordjs/-api-types/v9')
 
 require('dotenv').config()
 
