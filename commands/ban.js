@@ -1,179 +1,107 @@
+const {Client, Intents, Collection, MessageEmbed} = require('discord.js');
+const {SlashCommandBuilder} = require("@discordjs/builders");
+
 module.exports = {
-    callback: (message, Discord, client, ...args) => {
+    data: new SlashCommandBuilder()
+        .setName("ban")
+        .setDescription("Bans a user from the guild.")
+        .addUserOption((options) =>
+            options
+                .setName("user")
+                .setDescription("The user to ban.")
+                .setRequired(true)
+        )
+        .addIntegerOption((options) =>
+            options
+                .setName("duration")
+                .setDescription("The duration of the ban in days (0 to 7). Defaults to 0 (no duration).")
+                .addChoice("No duration", 0)
+                .addChoice("1 day", 1)
+                .addChoice("2 days", 2)
+                .addChoice("3 days", 3)
+                .addChoice("4 days", 4)
+                .addChoice("5 days", 5)
+                .addChoice("6 days", 6)
+                .addChoice("7 days", 7)
+                .setRequired(false)
+        )
+        .addStringOption((options) =>
+            options
+                .setName("reason")
+                .setDescription("The reason for the ban.")
+                .setRequired(false)
+        ),
+    async execute(client, interaction) {
         //Command information
-        const COMMAND_NAME = "ban";
-        const REQUIRED_ROLE = "Admin";
-        const EXCPECTED_ARGUMENTS = 1;
-        const OPTIONAL_ARGUMENTS = 1;
-
-        //Help command
-        if(args[0] == '?') {
-            const help_command = new Discord.MessageEmbed()
-                .setColor('#2020ff')
-                .setAuthor({name: "dir: ./commands/ban.js; Lines: 180; File size: ~8.8 KB"})
-                .setTitle(`,${COMMAND_NAME} command help (${REQUIRED_ROLE})`)
-                .setDescription('This command bans a user from the guild.')
-                .addField(`Usage`, "`" + `,${COMMAND_NAME}` + " <user> (<reason>)" + "`", false)
-                .addField(`Excpected arguments`, `${EXCPECTED_ARGUMENTS}`, true)
-                .addField(`Optional arguments`, `${OPTIONAL_ARGUMENTS}`, true)
-                .addField('Related commands', "`kick`", false)
-                .setFooter({text: `${message.author.tag} • ${COMMAND_NAME}`, iconURL: message.author.displayAvatarURL({dynamic: true})})
-                .setTimestamp();
-
-            message.channel.send({embeds: [help_command]})
-            return;
-        }
+        const REQUIRED_ROLE = "Mod";
 
         //Declaring variables
-        let verdict;
-        let messageMemberHighestRole;
-        let memberTargetHighestRole;
+        const target = interaction.options.getUser('user');
+        let reason = interaction.options.getString('reason');
+        let banDuration = interaction.options.getInteger('duration')
+        const memberTarget = interaction.guild.members.cache.get(target.id);
 
-        //Declaring functions
-        function GetMessageMemberHighestRole(message) {
-            if(message.member.roles.cache.find(role => role.name == "Owner")) {
-                return 0;
-            } else if(message.member.roles.cache.find(role => role.name == "Admin")) {
-                return 1;
-            } else if(message.member.roles.cache.find(role => role.name == "Mod")) {
-                return 2;
-            } else if(message.member.roles.cache.find(role => role.name == "staff")) {
-                return 3;
-            } else {
-                return null;
-            }
-        }
-        function GetMemberTargetHighestRole(memberTarget) {
-            if(memberTarget.roles.cache.find(role => role.name == "Owner")) {
-                return 0;
-            } else if(memberTarget.roles.cache.find(role => role.name == "Admin")) {
-                return 1;
-            } else if(memberTarget.roles.cache.find(role => role.name == "Mod")) {
-                return 2;
-            } else if(memberTarget.roles.cache.find(role => role.name == "staff")) {
-                return 3;
-            } else {
-                return null;
-            }
-        }
-        function CanMessageMemberExecute(messageMemberHighestRole, memberTargetHighestRole) {
-            if(messageMemberHighestRole == memberTargetHighestRole) {
-                return "equal";
-            } else if(messageMemberHighestRole < memberTargetHighestRole || memberTargetHighestRole == null) {
-                return "yes";
-            } else {
-                return "no";
-            }
-        }
-        function Verdict(message, verdict) {
-            if(verdict == "equal") {
-                const error_equal_roles = new Discord.MessageEmbed()
-                    .setColor('ff2020')
-                    .setAuthor({name: "PermissionError"})
-                    .setDescription(`Your highest role is equal to <@${message.member.user.id}>'s highest role.`)
-                    .setFooter({text: `${message.author.tag} • Use ',${COMMAND_NAME} ?' for help`, iconURL: message.author.displayAvatarURL({dynamic: true})})
-                    .setTimestamp();
-
-                message.channel.send({embeds: [error_equal_roles]})
-                return;
-            } else if(verdict == "yes") {
-                memberTarget.ban()
-                    .then((banResult) => {
-                        const success_ban = new Discord.MessageEmbed()
-                            .setColor('20ff20')
-                            .setAuthor({name: "Success"})
-                            .setTitle("User ban")
-                            .setDescription(`<@${message.member.user.id}> banned <@${memberTarget.user.id}>.`)
-                            .setFooter({text: `${message.author.tag} • ${COMMAND_NAME}`, iconURL: message.author.displayAvatarURL({dynamic: true})})
-                            .setTimestamp();
-
-                        message.channel.send({embeds: [success_ban]})
-                        return;
-                    })
-                    .catch((error) => {
-                        console.log(error)
-                        const error_catch = new Discord.MessageEmbed()
-                            .setColor('#ff20ff')
-                            .setAuthor({name: "PromiseRejected"})
-                            .setTitle("Critical error catch")
-                            .setDescription("An error was caught at line `93`.")
-                            .addField("code", `${error.code}`, true)
-                            .addField("httpsStatus", `${error.httpStatus}`, true)
-                            .addField("path", `${error.path}`, false)
-                            .setFooter({text: `${message.author.tag} • Use ',${COMMAND_NAME} ?' for help`, iconURL: message.author.displayAvatarURL({dynamic: true})})
-                            .setTimestamp();
-
-                        message.channel.send({embeds: [error_catch]})
-                    })
-            } else {
-                const error_role_too_low = new Discord.MessageEmbed()
-                    .setColor('ff2020')
-                    .setAuthor({name: "PermissionError"})
-                    .setDescription(`Your role is lower than <@${memberTarget.user.id}>'s role.`)
-                    .setFooter({text: `${message.author.tag} • Use ',${COMMAND_NAME} ?' for help`, iconURL: message.author.displayAvatarURL({dynamic: true})})
-                    .setTimestamp();
-
-                message.channel.send({embeds: [error_role_too_low]})
-                return;
-            }
-        }
-
-        //Checks
-        if(!message.member.roles.cache.find(role => role.name == REQUIRED_ROLE)) {
-            const error_permissions = new Discord.MessageEmbed()
+        //Check
+        if(!interaction.member.roles.cache.find(role => role.name == REQUIRED_ROLE)) {
+            const error_permissions = new MessageEmbed()
                 .setColor('#ff2020')
-                .setAuthor({name: "PermissionError"})
-                .setDescription("I'm sorry but you do not have the permissions to perform this command. Please contact the server administrators if you believe that this is an error.")
-                .setFooter({text: `${message.author.tag} • Use ',${COMMAND_NAME} ?' for help`, iconURL: message.author.displayAvatarURL({dynamic: true})})
-                .setTimestamp();
+                .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
+                .setTitle("PermissionError")
+                .setDescription("I'm sorry but you do not have the permissions to perform this command. Please contact the server administrators if you believe that this is an error.");
 
-            message.channel.send({embeds: [error_permissions]})
+            interaction.reply({embeds: [error_permissions], ephemeral: false});
             return;
         }
-        if(!args[0]) {
-            const error_missing_arguments = new Discord.MessageEmbed()
+        if(memberTarget.id == interaction.user.id) {
+            const error_cannot_use_on_self = new MessageEmbed()
                 .setColor('ff2020')
-                .setAuthor({name: "ReferenceError"})
-                .setDescription('Invalid user (not found).\n' +
-                    "Please provide a valid member to ban.")
-                .setFooter({text: `${message.author.tag} • Use ',${COMMAND_NAME} ?' for help`, iconURL: message.author.displayAvatarURL({dynamic: true})})
-                .setTimestamp();
+                .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
+                .setTitle("Error")
+                .setDescription('You cannot ban yourself.');
 
-            message.channel.send({embeds: [error_missing_arguments]})
+            interaction.reply({embeds: [error_cannot_use_on_self], ephemeral: false});
             return;
         }
-        const target = message.mentions.users.first();
-        if(!target) {
-            const reference_error_target = new Discord.MessageEmbed()
+        //Role position check---
+        if(memberTarget.roles.highest.position > interaction.member.roles.highest.position) {
+            const error_role_too_low = new MessageEmbed()
                 .setColor('ff2020')
-                .setAuthor({name: "ReferenceError"})
-                .setDescription('Invalid user (not found).\n' +
-                    "Please provide a valid member to ban.")
-                .setFooter({text: `${message.author.tag} • Use ',${COMMAND_NAME} ?' for help`, iconURL: message.author.displayAvatarURL({dynamic: true})})
-                .setTimestamp();
+                .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
+                .setTitle("PermissionError")
+                .setDescription(`Your highest role is lower than <@${memberTarget.id}>'s highest role.`);
 
-            message.channel.send({embeds: [reference_error_target]})
+            interaction.reply({embeds: [error_role_too_low], ephemeral: false});
             return;
         }
-        const memberTarget = message.guild.members.cache.get(target.id);
-        if(memberTarget == message.member) {
-            const error_cannot_use_on_self = new Discord.MessageEmbed()
+        if(memberTarget.roles.highest.position >= interaction.member.roles.highest.position) {
+            const error_equal_roles = new MessageEmbed()
                 .setColor('ff2020')
-                .setAuthor({name: "Error"})
-                .setDescription('You cannot use this command on yourself.')
-                .setFooter({text: `${message.author.tag} • Use ',${COMMAND_NAME} ?' for help`, iconURL: message.author.displayAvatarURL({dynamic: true})})
-                .setTimestamp();
+                .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
+                .setTitle("PermissionError")
+                .setDescription(`Your highest role is equal to <@${memberTarget.id}>'s highest role.`);
 
-            message.channel.send({embeds: [error_cannot_use_on_self]})
+            interaction.reply({embeds: [error_equal_roles], ephemeral: false});
             return;
         }
+        //---Role position check
 
         //Code
-        messageMemberHighestRole = GetMessageMemberHighestRole(message)
-        memberTargetHighestRole = GetMemberTargetHighestRole(memberTarget)
+        reason = reason ? ` \n**Reason:** ${reason}` : "";
+        banDuration = banDuration ? banDuration : 0;
+        memberTarget.ban(banDuration, reason)
+            .then(banResult => {
+                if(banDuration == 0) {
+                    banDuration == "";
+                } else {
+                    banDuration = ` for ${banDuration} days`;
+                }
+                const success_ban = new MessageEmbed()
+                    .setColor('20ff20')
+                    .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
+                    .setTitle("GuildMember ban")
+                    .setDescription(`<@${interaction.user.id}> banned <@${memberTarget.id}> from the guild${banDuration}.${reason}`);
 
-        verdict = CanMessageMemberExecute(messageMemberHighestRole, memberTargetHighestRole)
-
-        Verdict(message, verdict)
+                interaction.reply({embeds: [success_ban], ephemeral: false});
+            })
     }
 }
