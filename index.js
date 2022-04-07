@@ -81,7 +81,7 @@ client.on('interactionCreate', async interaction => {
 })
 
 client.on('guildMemberAdd', (guildMember) => {
-        guildMember.roles.add(guildMember.guild.roles.cache.find(role => role.name == "Goldfish"))
+    guildMember.roles.add(guildMember.guild.roles.cache.find(role => role.name == "Goldfish"))
 })
 
 client.login(process.env.DISCORD_BOT_TOKEN_GOLDFISH);
