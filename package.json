@@ -1,5 +1,5 @@
 {
-  "name": "discordbot-jerry-bot",
+  "name": "discordbot-goldfish-bot",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/AspectOfJerry/DiscordBot-Jerry-Bot.git"
+    "url": "git+https://github.com/AspectOfJerry/DiscordBot-Goldfish-Bot.git"
   },
   "keywords": [],
   "author": "",
