@@ -14,14 +14,18 @@ module.exports = {
     async execute(client, interaction) {
         //Command information
         const REQUIRED_ROLE = "everyone";
-        
+
         //Declaring variables
         let message = interaction.options.getString("string")
 
         //Checks
 
         //Code
-        interaction.reply({content: `Input message: ${message}`, ephemeral: true})
-        interaction.channel.send({content: `${message}`, ephemeral: false})
+        await interaction.reply({content: `Input message: ${message}`, ephemeral: true})
+        await interaction.channel.sendTyping()
+        setTimeout(() => {
+            await
+           
+        }, 1000)   
     }
 }
