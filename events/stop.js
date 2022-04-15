@@ -1,5 +1,7 @@
 module.exports = {
     async execute(client) {
+        console.log("Stopping the bot...");
+
         const guild = client.guilds.cache.get(process.env.DISCORD_JERRY_GUILD_ID)
         const channel = "";
 

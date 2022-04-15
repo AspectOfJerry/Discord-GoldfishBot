@@ -3,12 +3,12 @@ const {SlashCommandBuilder} = require("@discordjs/builders");
 
 module.exports = {
     data: new SlashCommandBuilder()
-        .setName('say')
-        .setDescription("[DEPRECATED] Sends a message to the current channel. Please use '/send' instead.")
-        .addStringOption((options) =>
+        .setName('avatar')
+        .setDescription("[DEPRECATED] Sends a user's avatar. Please use the '/profile' command instead.")
+        .addUserOption((options) =>
             options
-                .setName('message')
-                .setDescription("The message to send.")
+                .setName('user')
+                .setDescription("The user's avatar to send. Defaults to yourself.")
                 .setRequired(true))
         .addBooleanOption((options) =>
             options
@@ -21,8 +21,8 @@ module.exports = {
 
         //Declaring variables
         const is_ephemeral = interaction.options.getBoolean('ephemeral');
-
-        let message = interaction.options.getString("string");
+        const target = interaction.options.getUser('user');
+        const memberTarget = interaction.guild.members.cache.get(target.id);
 
         //Checks
 
@@ -31,7 +31,7 @@ module.exports = {
             .setColor('#ff2020')
             .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
             .setTitle('DeprecationWarning')
-            .setDescription("This command is deprecated. Please use the `/send` command instead.")
+            .setDescription("This command is deprecated. Please use the `/profile` command instead.")
 
         interaction.reply({emebds: [deprecation_warning], ephemeral: is_ephemeral});
     }
