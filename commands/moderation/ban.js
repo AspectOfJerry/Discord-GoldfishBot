@@ -93,10 +93,10 @@ module.exports = {
         //Code
         reason = reason ? ` \n**Reason:** ${reason}` : "";
         banDuration = banDuration ? banDuration : 0;
-        memberTarget.ban(banDuration, reason)
+        memberTarget.ban({days: banDuration, reason: reason})
             .then(banResult => {
                 if(banDuration == 0) {
-                    banDuration == "";
+                    banDuration = "";
                 } else {
                     banDuration = ` for ${banDuration} days`;
                 }
