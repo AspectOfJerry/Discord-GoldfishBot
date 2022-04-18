@@ -93,3 +93,4 @@ client.on('guildMemberAdd', (guildMember) => {
 })
 
 client.login(process.env.DISCORD_BOT_TOKEN_GOLDFISH);
+a

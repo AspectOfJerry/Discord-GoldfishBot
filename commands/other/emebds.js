@@ -33,7 +33,7 @@ module.exports = {
             case "ban":
                 await interaction.reply({content: "Showing ban command messages.", ephemeral: is_ephemeral});
                 const ban_error_permissions = new MessageEmbed()
-                    .setColor('#ff2020')
+                    .setColor('RED')
                     .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
                     .setTitle('PermissionError')
                     .setDescription("I'm sorry but you do not have the permissions to perform this command. Please contact the server administrators if you believe that this is an error.")
@@ -73,7 +73,7 @@ module.exports = {
             case "kick":
                 interaction.reply({content: "Showing kick command messages.", ephemeral: is_ephemeral});
                 const kick_error_permissions = new MessageEmbed()
-                    .setColor('#ff2020')
+                    .setColor('RED')
                     .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
                     .setTitle('PermissionError')
                     .setDescription("I'm sorry but you do not have the permissions to perform this command. Please contact the server administrators if you believe that this is an error.")
