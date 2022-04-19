@@ -1,4 +1,4 @@
-const {Client, Intents, Collection, MessageEmbed} = require('discord.js');
+const {Client, Intents, Collection, MessageEmbed, MessageActionRow, MessageButton} = require('discord.js');
 const {SlashCommandBuilder} = require("@discordjs/builders");
 
 module.exports = {
@@ -31,6 +31,10 @@ module.exports = {
 
         let reason = interaction.options.getString('reason');
 
+        let isRole = "";
+        let isRoleTitle = "";
+        let kickAnyway = "";
+
         //Checks
         if(!interaction.member.roles.cache.find(role => role.name == REQUIRED_ROLE)) {
             const error_permissions = new MessageEmbed()
@@ -53,7 +57,7 @@ module.exports = {
             interaction.reply({embeds: [error_cannot_use_on_self], ephemeral: is_ephemeral});
             return;
         }
-        //Role position check---
+        //---Role position check
         if(memberTarget.roles.highest.position > interaction.member.roles.highest.position) {
             const error_role_too_low = new MessageEmbed()
                 .setColor('ff2020')
@@ -74,19 +78,91 @@ module.exports = {
             interaction.reply({embeds: [error_equal_roles], ephemeral: is_ephemeral});
             return;
         }
-        //---Role position check
+        //Role position check---
+        if(memberTarget.roles.cache.find(role => role.name == "Owner")) {
+            kickAnyway = " anyway";
+            isRoleTitle = " Owner";
+            isRole = " They have the 'Owner' role.";
+        } else if(memberTarget.roles.cache.find(role => role.name == "Admin")) {
+            kickAnyway = " anyway";
+            isRoleTitle = " Administrator";
+            isRole = " They have the 'Administrator' role.";
+        } else if(memberTarget.roles.cache.find(role => role.name == "Mod")) {
+            kickAnyway = " anyway";
+            isRoleTitle = " Moderator";
+            isRole = " They have the 'Moderator' role.";
+        } else if(memberTarget.roles.cache.find(role => role.name == "staff")) {
+            kickAnyway = " anyway";
+            isRoleTitle = " Staff";
+            isRole = " They have the 'Helper' role.";
+        } else if(memberTarget.roles.cache.find(role => role.name == "Trusted")) {
+            kickAnyway = " anyway";
+            isRoleTitle = " Trusted";
+            isRole = " They are trusted.";
+        }
 
         //Code
-        reason = reason ? ` \n**Reason:** ${reason}` : "";
-        memberTarget.kick(reason)
-            .then(kickResult => {
-                const success_kick = new MessageEmbed()
-                    .setColor('20ff20')
-                    .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
-                    .setTitle("GuildMember kick")
-                    .setDescription(`<@${interaction.user.id}> kicked <@${memberTarget.id}> from the guild.${reason}`);
+        let row = new MessageActionRow()
+            .addComponents(
+                new MessageButton()
+                    .setCustomId('kick_confirm_button')
+                    .setLabel(`Kick${kickAnyway}`)
+                    .setStyle('DANGER')
+                    .setDisabled(false),
+                new MessageButton()
+                    .setCustomId('kick_cancel_button')
+                    .setLabel('Cancel')
+                    .setStyle('PRIMARY')
+                    .setDisabled(false)
+            )
 
-                interaction.reply({embeds: [success_kick], ephemeral: is_ephemeral});
-            })
+        const confirm_kick = new MessageEmbed()
+            .setColor('YELLOW')
+            .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
+            .setTitle(`Confirm Kick${isRoleTitle}`)
+            .setDescription(`Are you sure you want to kick <@${memberTarget.id}>?${isRole}`)
+
+        interaction.reply({embeds: [confirm_kick], components: [row], ephemeral: is_ephemeral})
+
+        const filter = (buttonInteraction) => {
+            if(buttonInteraction.user.id == interaction.user.id) {
+                return true;
+            } else {
+                return buttonInteraction.reply({content: "You cannot use this button.", ephemeral: true});
+            }
+        }
+        const kick_collector = interaction.channel.createMessageComponentCollector({filter, time: 30000});
+
+        kick_collector.on('collect', async buttonInteraction => {
+            //Disabling buttons
+            row.components[0]
+                .setDisabled(true);
+            row.components[1]
+                .setDisabled(true);
+            interaction.editReply({embeds: [confirm_kick], components: [row], ephemeral: is_ephemeral});
+
+            if(buttonInteraction.customId == 'kick_confirm_button') {
+                reason = reason ? ` \n**Reason:** ${reason}` : "";
+                memberTarget.kick(reason)
+                    .then(kickResult => {
+                        const success_kick = new MessageEmbed()
+                            .setColor('20ff20')
+                            .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
+                            .setTitle("GuildMember kick")
+                            .setDescription(`<@${interaction.user.id}> kicked <@${memberTarget.id}> from the guild.${reason}`);
+
+                        buttonInteraction.reply({embeds: [success_kick], ephemeral: is_ephemeral});
+                    })
+                kick_collector.stop();
+            } else {
+                const cancel_kick = new MessageEmbed()
+                    .setColor('GREEN')
+                    .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
+                    .setDescription(`<@${interaction.user.id}> cancelled the kick.`);
+
+                buttonInteraction.reply({embeds: [cancel_kick], ephemeral: is_ephemeral});
+            }
+            kick_collector.stop();
+        })
     }
 }
