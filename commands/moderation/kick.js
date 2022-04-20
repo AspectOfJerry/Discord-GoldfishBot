@@ -1,6 +1,8 @@
 const {Client, Intents, Collection, MessageEmbed, MessageActionRow, MessageButton} = require('discord.js');
 const {SlashCommandBuilder} = require("@discordjs/builders");
 
+const Sleep = require('../../modules/sleep');
+
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('kick')
@@ -98,8 +100,42 @@ module.exports = {
         } else if(memberTarget.roles.cache.find(role => role.name == "Trusted")) {
             kickAnyway = " anyway";
             isRoleTitle = " Trusted";
-            isRole = " They are trusted.";
+            isRole = " They are a trusted member.";
         }
+        //---Developer immunity
+        if(memberTarget.id == "611633988515266562") {
+            interaction.defer() //MAKE THE INTERACTION WAIT LONGER HERE
+            await Sleep(1000)
+            await interaction.channel.sendTyping()
+            await Sleep(750)
+            await interaction.channel.send({content: `Hey <@${interaction.user.id}>,`})
+            await Sleep(250)
+            await interaction.channel.sendTyping()
+            await Sleep(1500)
+            await interaction.channel.send({content: `Did you just try to kick <@${memberTarget.id}>?`})
+            await Sleep(250)
+            await interaction.channel.sendTyping()
+            await Sleep(2000)
+            await interaction.channel.send({content: "You know he's the developer of this bot, right?."})
+            await Sleep(250)
+            await interaction.channel.sendTyping()
+            await Sleep(2000)
+            await interaction.channel.send({content: "You know that your actions are completely intolerable and very rude, right?"})
+            await Sleep(2000)
+            const dev_immunity = new MessageEmbed()
+                .setColor('RED')
+                .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
+                .setDescription(`<@${memberTarget.id}> is immune to this command because they are bot developer (and because they are cool).`)
+                .setFooter({text: "You can still manually ban him via his Discord profile but don't tell Jerry I told you this or else he be mad at me!"})
+
+            await interaction.reply({embeds: [dev_immunity], ephemeral: false});
+            await Sleep(250)
+            await interaction.channel.sendTyping()
+            await Sleep(500)
+            await interaction.followUp({content: "Nice try though."})
+            return;
+        }
+        //Developer immunity---
 
         //Code
         let row = new MessageActionRow()
