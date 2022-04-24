@@ -1,5 +1,7 @@
-const {Client, Intents, Collection, MessageEmbed} = require('discord.js');
+const {Client, Intents, Collection, MessageEmbed, MessageActionRow, MessageButton} = require('discord.js');
 const {SlashCommandBuilder} = require("@discordjs/builders");
+
+const Sleep = require('../../modules/sleep');
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -57,7 +59,6 @@ module.exports = {
         // //return;
 
         //Code
-        interaction.channel.send({content: "<@611633988515266562>, This command requires verification."});
         interaction.reply({content: "This command is currently unavailable.", ephemeral: is_ephemeral});
     }
 }
