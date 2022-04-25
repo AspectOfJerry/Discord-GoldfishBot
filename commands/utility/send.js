@@ -17,7 +17,7 @@ module.exports = {
                 .setRequired(false))
         .addBooleanOption((options) =>
             options
-                .setName('doTyping')
+                .setName('type')
                 .setDescription("[OPTIONAL] Whether you want the bot to type for 1 seconds before the message is sent.")
                 .setRequired(false))
         .addBooleanOption((options) =>
