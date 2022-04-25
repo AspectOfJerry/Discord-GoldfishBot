@@ -10,7 +10,7 @@ module.exports = {
         .addStringOption((options) =>
             options
                 .setName('reason')
-                .setDescription("The reason for the stop request.")
+                .setDescription("[OPTIONAL] The reason for the stop request.")
                 .setRequired(false))
         .addBooleanOption((options) =>
             options
@@ -95,9 +95,9 @@ module.exports = {
                 const cancel_stop = new MessageEmbed()
                     .setColor('GREEN')
                     .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
-                    .setDescription(`<@${interaction.user.id}> cancelled the stop request.`)
+                    .setDescription(`<@${interaction.user.id}> aborted the stop request.`)
 
-                buttonInteraction.reply({embeds: [cancel_stop], ephemeral: is_ephemeral});
+                await buttonInteraction.reply({embeds: [cancel_stop], ephemeral: is_ephemeral});
             }
             stop_collector.stop();
         })
