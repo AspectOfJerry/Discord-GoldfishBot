@@ -1,6 +1,9 @@
 const {Client, Intents, Collection, MessageEmbed} = require('discord.js');
 const {SlashCommandBuilder} = require("@discordjs/builders");
 
+const Sleep = require('../../modules/sleep');
+const Log = require('../../modules/logger');
+
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('purge')
@@ -8,7 +11,7 @@ module.exports = {
         .addIntegerOption((options) =>
             options
                 .setName('amount')
-                .setDescription("The amount of messages to delete.")
+                .setDescription("[REQUIRED] The amount of messages to delete.")
                 .setRequired(true))
         .addBooleanOption((options) =>
             options

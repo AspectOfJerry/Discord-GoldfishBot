@@ -10,7 +10,7 @@ module.exports = async function Log(string, type, infoOnly) {
     const now_time = date.format(now, 'HH:mm:ss.SSS');
 
     //Generate the log file name
-    const file_name = `${now_date}_GoldfishBot-Jerry-Bot.log`;
+    const file_name = `${now_date}_DiscordBot-Goldfish-Bot.log`;
 
     //Generate the new line content
     //Types: INFO/GUILD, INFO/CHAT, INFO/LOG (intentional log), DEBUG, WARN, ERROR, FATAL

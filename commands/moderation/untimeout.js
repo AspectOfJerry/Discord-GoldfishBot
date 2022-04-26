@@ -1,6 +1,9 @@
 const {Client, Intents, Collection, MessageEmbed} = require('discord.js');
 const {SlashCommandBuilder} = require("@discordjs/builders");
 
+const Sleep = require('../../modules/sleep');
+const Log = require('../../modules/logger');
+
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('untimeout')
@@ -8,12 +11,12 @@ module.exports = {
         .addUserOption((options) =>
             options
                 .setName('user')
-                .setDescription("The user to untimeout.")
+                .setDescription("[REQUIRED] The user to untimeout.")
                 .setRequired(true))
         .addStringOption((options) =>
             options
                 .setName('reason')
-                .setDescription("The reason for the untimeout.")
+                .setDescription("[OPTIONAL] The reason for the untimeout.")
                 .setRequired(false))
         .addBooleanOption((options) =>
             options

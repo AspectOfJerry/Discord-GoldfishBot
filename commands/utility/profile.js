@@ -1,7 +1,8 @@
-//,profile (<user>)
-//Aliases: ["avatar", "av"]
 const {Client, Intents, Collection, MessageEmbed} = require('discord.js');
 const {SlashCommandBuilder} = require("@discordjs/builders");
+
+const Sleep = require('../../modules/sleep');
+const Log = require('../../modules/logger');
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -10,7 +11,7 @@ module.exports = {
         .addUserOption((options) =>
             options
                 .setName('user')
-                .setDescription("The user to search for. Defaults to yourself.")
+                .setDescription("[OPTIONAL] The user to search for. Defaults to yourself.")
                 .setRequired(false))
         .addBooleanOption((options) =>
             options
@@ -22,8 +23,8 @@ module.exports = {
         const REQUIRED_ROLE = "everyone";
 
         //Declaring variables
-        const is_ephemeral = interaction.options.getBoolean('ephemeral') || false;
-        const target = interaction.options.getUser('user');
+        const is_ephemeral = interaction.options.getBoolean('ephemeral') || false || false;
+        const target = interaction.options.getUser('user') || interaction.user;
         const memberTarget = interaction.guild.members.cache.get(target.id);
 
         //Checks

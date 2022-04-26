@@ -1,6 +1,9 @@
 const {Client, Intents, Collection, MessageEmbed} = require('discord.js');
 const {SlashCommandBuilder} = require("@discordjs/builders");
 
+const Sleep = require('../../modules/sleep');
+const Log = require('../../modules/logger');
+
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('calculate')
@@ -9,12 +12,12 @@ module.exports = {
         .addIntegerOption((options) =>
             options
                 .setName('operand1')
-                .setDescription("The first operand.")
+                .setDescription("[REQUIRED] The first operand.")
                 .setRequired(true))
         .addStringOption((options) =>
             options
                 .setName('operation')
-                .setDescription('The operation.')
+                .setDescription('[REQUIRED] The operation.')
                 .setRequired(true)
                 .addChoice("Addition", 'add')
                 .addChoice("Subtraction", 'subtract')
@@ -25,7 +28,7 @@ module.exports = {
         .addIntegerOption((options) =>
             options
                 .setName('operand2')
-                .setDescription("The second operand.")
+                .setDescription("[REQUIRED] The second operand.")
                 .setRequired(true))
         .addBooleanOption((options) =>
             options

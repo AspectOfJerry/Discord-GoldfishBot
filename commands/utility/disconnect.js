@@ -1,6 +1,9 @@
 const {Client, Intents, Collection, MessageEmbed} = require('discord.js');
 const {SlashCommandBuilder} = require("@discordjs/builders");
 
+const Sleep = require('../../modules/sleep');
+const Log = require('../../modules/logger');
+
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('disconnect')
@@ -8,12 +11,12 @@ module.exports = {
         .addUserOption((options) =>
             options
                 .setName('user')
-                .setDescription("The user to disconnect.")
+                .setDescription("[OPTIONAL] The user to disconnect. Defaults to yourself.")
                 .setRequired(false))
         .addBooleanOption((options) =>
             options
                 .setName('all')
-                .setDescription("If you want to disconnect everyone in the targted user's voice channel.")
+                .setDescription("[OPTIONAL] If you want to disconnect everyone in the targted user's voice channel. Defaults to false")
                 .setRequired(false))
         .addBooleanOption((options) =>
             options
@@ -25,7 +28,7 @@ module.exports = {
         const REQUIRED_ROLE = "staff";
 
         //Declaring variables
-        const is_ephemeral = interaction.options.getBoolean('ephemeral') || false || false;
+        const is_ephemeral = interaction.options.getBoolean('ephemeral') || false;
         const target = interaction.options.getUser('user') || interaction.user;
         const memberTarget = interaction.guild.members.cache.get(target.id);
 

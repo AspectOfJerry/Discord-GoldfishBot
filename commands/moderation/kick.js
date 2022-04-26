@@ -2,6 +2,7 @@ const {Client, Intents, Collection, MessageEmbed, MessageActionRow, MessageButto
 const {SlashCommandBuilder} = require("@discordjs/builders");
 
 const Sleep = require('../../modules/sleep');
+const Log = require('../../modules/logger');
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -10,12 +11,12 @@ module.exports = {
         .addUserOption((options) =>
             options
                 .setName('user')
-                .setDescription("The user to kick.")
+                .setDescription("[REQUIRED] The user to kick.")
                 .setRequired(true))
         .addStringOption((options) =>
             options
                 .setName('reason')
-                .setDescription("The reason for the kick.")
+                .setDescription("[OPTIONAL] The reason for the kick.")
                 .setRequired(false))
         .addBooleanOption((options) =>
             options
