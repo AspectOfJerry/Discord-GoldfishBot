@@ -27,7 +27,7 @@ module.exports = {
         const reason = interaction.options.getString('reason') || "No reason provided";
 
         //Checks
-        if(!interaction.member.roles.cache.find(role => role.name = REQUIRED_ROLE)) {
+        if(!interaction.member.roles.cache.find(role => role.name == REQUIRED_ROLE)) {
             const error_permissions = new MessageEmbed()
                 .setColor('RED')
                 .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
