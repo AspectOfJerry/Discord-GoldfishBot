@@ -154,7 +154,7 @@ module.exports = {
         interaction.reply({embeds: [confirm_kick], components: [row], ephemeral: is_ephemeral})
 
         const filter = (buttonInteraction) => {
-            if(buttonInteraction.memebr.roles.highest.position > interaction.member.roles.highest.position) {
+            if(buttonInteraction.member.roles.highest.position > interaction.member.roles.highest.position) {
                 return true;
             }
             else if(buttonInteraction.user.id == interaction.user.id) {
