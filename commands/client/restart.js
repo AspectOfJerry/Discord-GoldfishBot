@@ -32,7 +32,7 @@ module.exports = {
             .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
             .setDescription("Destroying the client...");
         const soft_restart = new MessageEmbed()
-            .setColor('#ffff20')
+            .setColor('YELLOW')
             .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
             .setDescription("Initiating a soft restart...");
         //Checks
@@ -63,7 +63,5 @@ module.exports = {
             .addField('Reason', `${reason}`, false);
 
         channel.send({embeds: [online], ephemeral: false});
-
-        console.log(`${interaction.user.id} executed /restart at ${interaction.createdAt}.`)
     }
 }

@@ -72,7 +72,7 @@ module.exports = {
             const current_voice_channel = memberTarget.voice.channel;
             const member_count = memberTarget.voice.channel.members.size;
             const disconnecting_members = new MessageEmbed()
-                .setColor('#ffff20')
+                .setColor('YELLOW')
                 .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
                 .setDescription(`Disconnecting all ${member_count} members from ${current_voice_channel}...`);
 
