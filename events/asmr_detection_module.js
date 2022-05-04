@@ -9,7 +9,7 @@ module.exports = (message, Discord, client, ...args) => {
                 const videoTitle = response.videoDetails.title;
                 if(videoTitle.toUpperCase().includes("ASMR")) {
                     const goldfish_asmr_detection_module = new Discord.MessageEmbed()
-                        .setColor("ff2020")
+                        .setColor("RED")
                         .setAuthor({name: "MasterWarning"})
                         .setTitle("Goldfish ASMR Detection Module alert")
                         .setDescription(`<@${message.member.user.id}> has posted a link redirecting to an ASMR video.`)

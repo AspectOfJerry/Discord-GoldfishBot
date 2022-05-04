@@ -58,7 +58,7 @@ module.exports = {
         }
         if(memberTarget.id == interaction.user.id) {
             const error_cannot_use_on_self = new MessageEmbed()
-                .setColor('ff2020')
+                .setColor('RED')
                 .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
                 .setTitle("Error")
                 .setDescription('You cannot timeout yourself.');
@@ -80,7 +80,7 @@ module.exports = {
         //Role position check---
         if(memberTarget.roles.highest.position > interaction.member.roles.highest.position) {
             const error_role_too_low = new MessageEmbed()
-                .setColor('ff2020')
+                .setColor('RED')
                 .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
                 .setTitle('PermissionError')
                 .setDescription(`Your highest role is lower than <@${memberTarget.id}>'s highest role.`);
@@ -90,7 +90,7 @@ module.exports = {
         }
         if(memberTarget.roles.highest.position >= interaction.member.roles.highest.position) {
             const error_equal_roles = new MessageEmbed()
-                .setColor('ff2020')
+                .setColor('RED')
                 .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
                 .setTitle('PermissionError')
                 .setDescription(`Your highest role is equal to <@${interaction.user.id}>'s highest role.`);
@@ -105,7 +105,7 @@ module.exports = {
         memberTarget.timeout(durationInMs, reason)
             .then(timeoutResult => {
                 const success_timeout = new MessageEmbed()
-                    .setColor('20ff20')
+                    .setColor('GREEN')
                     .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
                     .setTitle("User timeout")
                     .setDescription(`<@${interaction.user.id}> timed out <@${memberTarget.id}> for ${duration}.${reason}`);

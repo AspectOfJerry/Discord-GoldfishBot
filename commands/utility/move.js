@@ -49,7 +49,7 @@ module.exports = {
                 .setDescription("I'm sorry but you do not have the permissions to perform this command. Please contact the server administrators if you believe that this is an error.")
                 .setFooter({text: `You need at least the '${REQUIRED_ROLE}' role to use this command.`});
 
-            interaction.reply({embeds: [error_permissions], ephemeral: is_ephemeral});
+            await interaction.reply({embeds: [error_permissions], ephemeral: is_ephemeral});
             return;
         }
         if(!memberTarget.voice.channel) {
@@ -89,7 +89,7 @@ module.exports = {
                 member.voice.setChannel(new_voice_channel)
                     .then(() => {
                         const move_success = new MessageEmbed()
-                            .setColor('20ff20')
+                            .setColor('GREEN')
                             .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
                             .setDescription(`Successfully moved <@${member.id}> from ${current_voice_channel} to ${new_voice_channel}.`);
 

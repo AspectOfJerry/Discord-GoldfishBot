@@ -45,7 +45,7 @@ module.exports = {
                 .setDescription("I'm sorry but you do not have the permissions to perform this command. Please contact the server administrators if you believe that this is an error.")
                 .setFooter({text: `You cannot use this command. Only Jerry#3756 can!`});
 
-            interaction.reply({embeds: [error_permissions], ephemeral: is_ephemeral});
+            await interaction.reply({embeds: [error_permissions], ephemeral: is_ephemeral});
             return;
         }
         if(memberTarget.user.bot) {
@@ -70,7 +70,7 @@ module.exports = {
             .then(messageResult => {
                 DMChannel = messageResult.channel;
                 const message_sent = new MessageEmbed()
-                    .setColor('20ff20')
+                    .setColor('GREEN')
                     .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
                     .setTitle("Message sent!")
                     .setDescription("This command creates a message collector in the DM channel. That is to say, you will be able to see what the targeted member sends to the bot.")

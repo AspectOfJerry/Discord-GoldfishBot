@@ -36,12 +36,12 @@ module.exports = {
                 .setDescription("I'm sorry but you do not have the permissions to perform this command. Please contact the server administrators if you believe that this is an error.")
                 .setFooter({text: `You need at least the '${REQUIRED_ROLE}' role to use this command.`});
 
-            interaction.reply({embeds: [error_permissions], ephemeral: is_ephemeral});
+            await interaction.reply({embeds: [error_permissions], ephemeral: is_ephemeral});
             return;
         }
         if(memberTarget.id == interaction.user.id) {
             const error_cannot_use_on_self = new MessageEmbed()
-                .setColor('ff2020')
+                .setColor('RED')
                 .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
                 .setTitle('Error')
                 .setDescription('You cannot unban yourself.');
@@ -51,7 +51,7 @@ module.exports = {
         }
         // //Check if target is in the guild
         // const error_user_not_banned = new MessageEmbed()
-        //     .setColor('ff2020')
+        //     .setColor('RED')
         //     .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
         //     .setTitle('Error')
         //     .setDescription(`<@${memberTarget.id}> is not banned from the guild`)

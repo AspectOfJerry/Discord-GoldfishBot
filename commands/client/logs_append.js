@@ -36,7 +36,7 @@ module.exports = {
                 .setDescription("I'm sorry but you do not have the permissions to perform this command. Please contact the server administrators if you believe that this is an error.")
                 .setFooter({text: `You need at least the '${REQUIRED_ROLE}' role to use this command.`});
 
-            interaction.reply({embeds: [error_permissions], ephemeral: is_ephemeral});
+            await interaction.reply({embeds: [error_permissions], ephemeral: is_ephemeral});
             return;
         }
 
@@ -57,7 +57,7 @@ module.exports = {
             .addField('Target Directory', `../logs/${(await object).fileName}`, false)
 
         await interaction.reply({embeds: [writing_to_logs], ephemeral: is_ephemeral});
-        await Log(string, "LOG")
+        await Log(interaction.guild.id, string, "LOG")
         await Sleep(250);
 
         interaction.editReply({embeds: [_writing_to_logs], ephemeral: is_ephemeral});

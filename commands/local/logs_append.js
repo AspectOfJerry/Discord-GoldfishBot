@@ -6,13 +6,13 @@ const Log = require('../../modules/logger');
 
 module.exports = {
     data: new SlashCommandBuilder()
-        .setName('restart')
-        .setDescription("Restarts the bot.")
+        .setName('log')
+        .setDescription("Appends a message to the current log file.")
         .addStringOption((options) =>
             options
-                .setName('reason')
-                .setDescription("The reason for the restart request.")
-                .setRequired(false))
+                .setName('string')
+                .setDescription("[REQUIRED] The string to log.")
+                .setRequired(true))
         .addBooleanOption((options) =>
             options
                 .setName('ephemeral')
@@ -20,21 +20,18 @@ module.exports = {
                 .setRequired(false)),
     async execute(client, interaction) {
         //Command information
+        await Log(interaction.guild.id, `'${interaction.user.tag}' executed '/logs_append'.`, 'INFO');
         const REQUIRED_ROLE = "staff";
 
         //Declaring variables
         const is_ephemeral = interaction.options.getBoolean('ephemeral') || false;
+        await Log(interaction.guild.id, `├─ephemeral: ${is_ephemeral}`, 'DEBUG'); //Logs
 
-        const reason = interaction.options.getString('reason') || "No reason provided";
+        const string = interaction.options.getString('string');
+        await Log(interaction.guild.id, `└─string: ${string}`, 'DEBUG');  //Logs
 
-        const destroying_client = new MessageEmbed()
-            .setColor('FUCHSIA')
-            .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
-            .setDescription("Destroying the client...");
-        const soft_restart = new MessageEmbed()
-            .setColor('YELLOW')
-            .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
-            .setDescription("Initiating a soft restart...");
+        const object = Log(string, 'LOG', true);
+
         //Checks
         if(!interaction.member.roles.cache.find(role => role.name == REQUIRED_ROLE)) {
             const error_permissions = new MessageEmbed()
@@ -45,23 +42,26 @@ module.exports = {
                 .setFooter({text: `You need at least the '${REQUIRED_ROLE}' role to use this command.`});
 
             await interaction.reply({embeds: [error_permissions], ephemeral: is_ephemeral});
+            await Log(interaction.guild.id, `└─'${interaction.user.id}' did not have the required role to use '/log'.`, 'WARN');
             return;
         }
 
         //Code
-        interaction.reply({embeds: [soft_restart], ephemeral: false})
-        await interaction.channel.send({embeds: [destroying_client], ephemeral: false})
-        const channel = client.channels.cache.get(interaction.channel.id);
-        client.destroy();
-
-        await Sleep(2500)
-        await client.login(process.env.DISCORD_BOT_TOKEN_JERRY)
-        const online = new MessageEmbed()
+        const writing_to_logs = new MessageEmbed()
+            .setColor('YELLOW')
+            .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
+            .setTitle('Writing to logs...')
+            .addField('String', `${string}`, false)
+            .addField('Target Directory', `../logs/`, false)
+        const _writing_to_logs = new MessageEmbed()
             .setColor('GREEN')
             .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
-            .setDescription("The bot has restarted!")
-            .addField('Reason', `${reason}`, false);
+            .setTitle('Writing to logs')
+            .addField('String', `${(await object).parsedString}`, false)
+            .addField('Target Directory', `../logs/${(await object).fileName}`, false)
 
-        channel.send({embeds: [online], ephemeral: false});
+        await interaction.reply({embeds: [writing_to_logs], ephemeral: is_ephemeral});
+        await Log(interaction.guild.id, string, 'LOG');   //Logging
+        await interaction.editReply({embeds: [_writing_to_logs], ephemeral: is_ephemeral});
     }
 }
