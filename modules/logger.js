@@ -13,7 +13,7 @@ module.exports = async function Log(string, type, infoOnly) {
     const file_name = `${now_date}_DiscordBot-Goldfish-Bot.log`;
 
     //Generate the new line content
-    //Types: INFO/GUILD, INFO/CHAT, INFO/LOG (intentional log), DEBUG, WARN, ERROR, FATAL
+    //Types: INFO/GUILD, INFO/CHAT, INFO/LOG (intentional log), INFO, WARN, ERROR, FATAL
     if(!type) {
         type = "INFO/UNKNOWN";
     }
