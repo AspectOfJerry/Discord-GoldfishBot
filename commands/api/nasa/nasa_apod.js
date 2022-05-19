@@ -1,6 +1,6 @@
 const {Client, Intents, Collection, MessageEmbed} = require('discord.js');
 const {SlashCommandBuilder} = require("@discordjs/builders");
-const fetch = require('window-fetch')
+const fetch = require('node-fetch@2')
 
 const jerry_nasa_api_key = process.env.NASA_API_KEY_JERRY;
 
@@ -31,7 +31,7 @@ module.exports = {
         //Code
         //API request
         await fetch(`https://api.nasa.gov/planetary/apod?api_key=${jerry_nasa_api_key}`)
-            .then(response => response.json())
+            .then(res => res.json())
             .then(data => {
                 if(data.error) {
                     const request_error = new MessageEmbed()
