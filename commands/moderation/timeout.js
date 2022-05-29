@@ -1,4 +1,4 @@
-const {Client, Intents, Collection, MessageEmbed} = require('discord.js');
+const {Client, Intents, Collection, MessageEmbed, MessageActionRow, MessageButton} = require('discord.js');
 const {SlashCommandBuilder} = require("@discordjs/builders");
 const ms = require('ms')
 
@@ -30,19 +30,23 @@ module.exports = {
                 .setDescription("[OPTIONAL] Whether you want the bot's messages to only be visible to yourself. Defaults to false.")
                 .setRequired(false)),
     async execute(client, interaction) {
+        await Log(interaction.guild.id, `'${interaction.user.tag}' executed '/timeout'.`, 'INFO');
         //Command information
         const REQUIRED_ROLE = "staff";
 
         //Declaring variables
         const is_ephemeral = interaction.options.getBoolean('ephemeral') || false;
+        await Log(interaction.guild.id, `├─ephemeral: ${is_ephemeral}`, 'INFO'); //Logs
         const target = interaction.options.getUser('user');
         const memberTarget = interaction.guild.members.cache.get(target.id);
+        await Log(interaction.guild.id, `├─memberTarget: '${memberTarget.user.tag}'`, 'INFO'); //Logs
 
         const duration = interaction.options.getString('duration');
         let reason = interaction.options.getString('reason');
+        await Log(interaction.guild.id, `├─reason: ${reason}`, 'INFO');
 
-
-        const durationInMs = ms(duration)
+        const duration_in_ms = ms(duration)
+        await Log(interaction.guild.id, `├─duration_in_ms: ${duration}`, 'INFO');
 
         //Checks
         if(!interaction.member.roles.cache.find(role => role.name == REQUIRED_ROLE)) {
@@ -54,6 +58,7 @@ module.exports = {
                 .setFooter({text: `You need at least the '${REQUIRED_ROLE}' role to use this command.`});
 
             interaction.reply({embeds: [error_permissions]})
+            await Log(interaction.guild.id, `└─'${interaction.user.id}' did not have the required role to user '/timeout'.`, 'WARN');   //Logs
             return;
         }
         if(memberTarget.id == interaction.user.id) {
@@ -64,9 +69,10 @@ module.exports = {
                 .setDescription('You cannot timeout yourself.');
 
             interaction.reply({embeds: [error_cannot_use_on_self], ephemeral: is_ephemeral});
+            await Log(interaction.guild.id, `${interaction.user.id} tried to timeout themselves.`, 'WARN');
             return;
         }
-        if(!durationInMs) {
+        if(!duration_in_ms) {
             const error_duration = new MessageEmbed()
                 .setColor('RED')
                 .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
@@ -86,6 +92,7 @@ module.exports = {
                 .setDescription(`Your highest role is lower than <@${memberTarget.id}>'s highest role.`);
 
             interaction.reply({embeds: [error_role_too_low], ephemeral: is_ephemeral});
+            await Log(interaction.guild.id, `└─'${interaction.user.tag}' tried to timeout ${memberTarget.user.tag} but their highest role was lower.`, 'WARN');    //Logs
             return;
         }
         if(memberTarget.roles.highest.position >= interaction.member.roles.highest.position) {
@@ -96,13 +103,14 @@ module.exports = {
                 .setDescription(`Your highest role is equal to <@${interaction.user.id}>'s highest role.`);
 
             interaction.reply({embeds: [error_equal_roles], ephemeral: is_ephemeral});
+            await Log(interaction.guild.id, `└─'${interaction.user.tag}' tried to timeout '${memberTarget.user.tag}' but their highest role was equal.`, 'WARN');  //Logs
             return;
         }
         //---Role position check
 
         //Code
         reason = reason ? ` \n**Reason:** ${reason}` : "";
-        memberTarget.timeout(durationInMs, reason)
+        memberTarget.timeout(duration_in_ms, reason)
             .then(timeoutResult => {
                 const success_timeout = new MessageEmbed()
                     .setColor('GREEN')
@@ -112,5 +120,6 @@ module.exports = {
 
                 interaction.reply({embeds: [success_timeout], ephemeral: is_ephemeral});
             })
+        await Log(interaction.guild.id, `└─'${interaction.user.tag}' timed out '${memberTarget.user.tag}' for ${duration}.${reason}`, 'WARN');  //Logs
     }
 }

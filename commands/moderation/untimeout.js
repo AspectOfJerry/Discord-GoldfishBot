@@ -1,4 +1,4 @@
-const {Client, Intents, Collection, MessageEmbed} = require('discord.js');
+const {Client, Intents, Collection, MessageEmbed, MessageActionRow, MessageButton} = require('discord.js');
 const {SlashCommandBuilder} = require("@discordjs/builders");
 
 const Sleep = require('../../modules/sleep'); //delayInMilliseconds;
@@ -24,13 +24,16 @@ module.exports = {
                 .setDescription("[OPTIONAL] Whether you want the bot's messages to only be visible to yourself. Defaults to false.")
                 .setRequired(false)),
     async execute(client, interaction) {
+        await Log(interaction.guild.id, `'${interaction.user.tag}' executed '/untimeout'.`, 'INFO');
         //Command information
         const REQUIRED_ROLE = "staff";
 
         //Declaring variables
         const is_ephemeral = interaction.options.getBoolean('ephemeral') || false;
+        await Log(interaction.guild.id, `├─ephemeral: ${is_ephemeral}`, 'INFO'); //Logs
         const target = interaction.options.getUser('user');
         const memberTarget = interaction.guild.members.cache.get(target.id);
+        await Log(interaction.guild.id, `├─memberTarget: '${memberTarget.user.tag}'`, 'INFO');
 
         let reason = interaction.options.getString('reason');
         //Checks
@@ -42,7 +45,8 @@ module.exports = {
                 .setDescription("I'm sorry but you do not have the permissions to perform this command. Please contact the server administrators if you believe that this is an error.")
                 .setFooter({text: `You need at least the '${REQUIRED_ROLE}' role to use this command.`});
 
-            interaction.reply({embeds: [error_permissions], ephemeral: is_ephemeral})
+            await interaction.reply({embeds: [error_permissions], ephemeral: is_ephemeral});
+            await Log(interaction.guild.id, `└─'${interaction.user.id}' did not have the required role to use '/untimeout'.`, 'WARN');
             return;
         }
         if(memberTarget.id == interaction.user.id) {

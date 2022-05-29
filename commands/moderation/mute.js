@@ -1,4 +1,4 @@
-const {Client, Intents, Collection, MessageEmbed} = require('discord.js');
+const {Client, Intents, Collection, MessageEmbed, MessageActionRow, MessageButton} = require('discord.js');
 const {SlashCommandBuilder} = require("@discordjs/builders");
 
 const Sleep = require('../../modules/sleep'); //delayInMilliseconds;
@@ -7,7 +7,7 @@ const Log = require('../../modules/logger'); //DEBUG, ERROR, FATAL, INFO, LOG, W
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('mute')
-        .setDescription("[OBSOLETE] Please use the '/timeout' command instead. Mutes a member.")
+        .setDescription("[DEPRECATED] Please use the '/timeout' command instead. Mutes a member.")
         .addUserOption((options) =>
             options
                 .setName('user')
@@ -24,36 +24,29 @@ module.exports = {
                 .setDescription("[OPTIONAL] Whether you want the bot's messages to only be visible to yourself. Defaults to false.")
                 .setRequired(false)),
     async execute(client, interaction) {
+        await Log(interaction.guild.id, `'${interaction.user.tag}' executed '/mute'.`, 'INFO');
         //Command information
-        const REQUIRED_ROLE = "PL3";
+        const REQUIRED_ROLE = "staff";
 
         //Declaring variables
         const is_ephemeral = interaction.options.getBoolean('ephemeral') || false;
+        await Log(interaction.guild.id, `├─ephemeral: ${is_ephemeral}`, 'INFO'); //Logs
         const target = interaction.options.getUser('user');
         const memberTarget = interaction.guild.members.cache.get(target.id);
+        await Log(interaction.guild.id, `├─memberTarget: '${memberTarget.user.tag}'`, 'INFO');
 
         const duration = interaction.options.getInteger('duration');
 
         //Checks
-        if(!interaction.member.roles.cache.find(role => role.name == REQUIRED_ROLE)) {
-            const error_permissions = new MessageEmbed()
-                .setColor('RED')
-                .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
-                .setTitle('PermissionError')
-                .setDescription("I'm sorry but you do not have the permissions to perform this command. Please contact the server administrators if you believe that this is an error.")
-                .setFooter({text: `You need at least the '${REQUIRED_ROLE}' role to use this command.`});
-
-            await interaction.reply({embeds: [error_permissions], ephemeral: is_ephemeral});
-            return;
-        }
 
         //Code
         const deprecation_warning = new MessageEmbed()
             .setColor('RED')
             .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
             .setTitle('DeprecationWarning')
-            .setDescription("This command is obsolete. Please use the `/timeout` command instead.")
+            .setDescription("This command is deprecated. Please use the `/timeout` command instead.")
 
         interaction.reply({embeds: [deprecation_warning], ephemeral: is_ephemeral});
+        await Log(interaction.guild.id, `└─This command is deprecated, and it is replaced by '/timeout'`, 'WARN')
     }
 }

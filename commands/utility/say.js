@@ -7,7 +7,7 @@ const Log = require('../../modules/logger'); //DEBUG, ERROR, FATAL, INFO, LOG, W
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('say')
-        .setDescription("[OBSOLETE] Please use '/send' instead. Sends a message to the current channel.")
+        .setDescription("[DEPRECATED] Please use '/send' instead. Sends a message to the current channel.")
         .addStringOption((options) =>
             options
                 .setName('message')
@@ -20,10 +20,12 @@ module.exports = {
                 .setRequired(false)),
     async execute(client, interaction) {
         //Command information
+        await Log(interaction.guild.id, `'${interaction.user.tag}' executed '/say'.`, 'INFO');    //Logs
         const REQUIRED_ROLE = "everyone";
 
         //Declaring variables
         const is_ephemeral = interaction.options.getBoolean('ephemeral') || false;
+        await Log(interaction.guild.id, `├─ephemeral: ${is_ephemeral}`, 'INFO'); //Logs
 
         let message = interaction.options.getString("string");
 
@@ -34,8 +36,9 @@ module.exports = {
             .setColor('RED')
             .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
             .setTitle('DeprecationWarning')
-            .setDescription("This command is obsolete. Please use the `/send` command instead.")
+            .setDescription("This command is deprecated. Please use the `/send` command instead.")
 
         interaction.reply({emebds: [deprecation_warning], ephemeral: is_ephemeral});
+        await Log(interaction.guild.id, `└─This command is deprecated, and it is replaced by '/send'`, 'WARN'); //Logs
     }
 }

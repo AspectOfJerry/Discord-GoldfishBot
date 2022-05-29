@@ -11,7 +11,7 @@ module.exports = {
         .addUserOption((options) =>
             options
                 .setName('user')
-                .setDescription("[REQUIRED] The user to unban.")
+                .setDescription("[REQUIRED] The user to unban (user ID).")
                 .setRequired(true))
         .addBooleanOption((options) =>
             options
@@ -19,13 +19,16 @@ module.exports = {
                 .setDescription("[OPTIONAL] Whether you want the bot's messages to only be visible to yourself. Defaults to false.")
                 .setRequired(false)),
     async execute(client, interaction) {
+        await Log(interaction.guild.id, `'${interaction.user.tag}' executed '/unban'.`, 'INFO');
         //Command information
         const REQUIRED_ROLE = "Mod";
 
         //Declaring variables
         const is_ephemeral = interaction.options.getBoolean('ephemeral') || false;
+        await Log(interaction.guild.id, `├─ephemeral: ${is_ephemeral}`, 'INFO'); //Logs
         const target = interaction.options.getUser('user');
         const memberTarget = interaction.guild.members.cache.get(target.id);
+        await Log(interaction.guild.id, `├─memberTarget: '${memberTarget.user.tag}'`, 'INFO');
 
         //Checks
         if(!interaction.member.roles.cache.find(role => role.name == REQUIRED_ROLE)) {
@@ -37,6 +40,7 @@ module.exports = {
                 .setFooter({text: `You need at least the '${REQUIRED_ROLE}' role to use this command.`});
 
             await interaction.reply({embeds: [error_permissions], ephemeral: is_ephemeral});
+            await Log(interaction.guild.id, `└─'${interaction.user.id}' did not have the required role to use '/unban'.`, 'WARN');
             return;
         }
         if(memberTarget.id == interaction.user.id) {

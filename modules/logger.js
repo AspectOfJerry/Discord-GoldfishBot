@@ -1,9 +1,16 @@
 const fs = require('fs');
 const date = require('date-and-time');
 
-module.exports = async function Log(string, type, infoOnly) {
+module.exports = async function Log(tag, string, type, infoOnly) {
     //Declaring variables
     const now = new Date();
+
+    let tagLenght = 0;
+    let tagExtraIndentNum = 0;
+    let tagExtraIndent = "";
+    let typeLenght = 0;
+    let typeExtraIndentNum = 0;
+    let typeExtraIndent = "";
 
     //Get current date
     const now_date = date.format(now, 'YYYY-MM-DD');
@@ -13,11 +20,22 @@ module.exports = async function Log(string, type, infoOnly) {
     const file_name = `${now_date}_DiscordBot-Goldfish-Bot.log`;
 
     //Generate the new line content
-    //Types: INFO/GUILD, INFO/CHAT, INFO/LOG (intentional log), INFO, WARN, ERROR, FATAL
-    if(!type) {
-        type = "INFO/UNKNOWN";
+    tagLenght = tag.length;
+    tagExtraIndentNum = 18 - tagLenght;
+    for(let i = 0; i < tagExtraIndentNum; i++) {
+        tagExtraIndent = tagExtraIndent + ">";
     }
-    string = `[${now_date}] [${now_time}] [Goldfish-Bot/${type}]: ${string}`;
+    //DEBUG, ERROR, FATAL, INFO, LOG, WARN; │, ─, ├─, └─;
+    if(!type) {
+        type = "NULL";
+    }
+    typeLenght = type.length;
+    typeExtraIndentNum = 5 - typeLenght;
+    for(let i = 0; i < typeExtraIndentNum; i++) {
+        typeExtraIndent = typeExtraIndent + " ";
+    }
+
+    string = `[${tagExtraIndent}${tag}] [${now_time}] [Goldfish-Bot/${type}]:${typeExtraIndent} ${string}`;
 
     //Only return info
     const return_object = {fileName: file_name, parsedString: string};

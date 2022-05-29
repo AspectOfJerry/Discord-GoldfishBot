@@ -1,4 +1,4 @@
-const {Client, Intents, Collection, MessageEmbed} = require('discord.js');
+const {Client, Intents, Collection, MessageEmbed, MessageActionRow, MessageButton} = require('discord.js');
 const {SlashCommandBuilder} = require("@discordjs/builders");
 
 const Sleep = require('../../modules/sleep'); //delayInMilliseconds;
@@ -19,11 +19,13 @@ module.exports = {
                 .setDescription("[OPTIONAL] Whether you want the bot's messages to only be visible to yourself. Defaults to false.")
                 .setRequired(false)),
     async execute(client, interaction) {
+        await Log(interaction.guild.id, `'${interaction.user.tag}' executed '/purge'.`, 'INFO');
         //Command information
         const REQUIRED_ROLE = "staff";
 
         //Declaring variables
         const is_ephemeral = interaction.options.getBoolean('ephemeral') || false;
+        await Log(interaction.guild.id, `├─ephemeral: ${is_ephemeral}`, 'INFO'); //Logs
 
         const amount = interaction.options.getInteger('amount');
         const channel = interaction.channel;
@@ -38,6 +40,7 @@ module.exports = {
                 .setFooter({text: `You need at least the '${REQUIRED_ROLE}' role to use this command.`});
 
             await interaction.reply({embeds: [error_permissions], ephemeral: is_ephemeral});
+            await Log(interaction.guild.id, `└─'${interaction.user.id}' did not have the required role to use '/purge'.`, 'WARN');    //Logs
             return;
         }
 

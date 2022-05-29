@@ -39,7 +39,7 @@ module.exports = {
     async execute(client, interaction) {
         await Log(interaction.guild.id, `'${interaction.user.tag}' executed '/ban'.`, 'INFO');
         //Command information
-        const REQUIRED_ROLE = "PL1";
+        const REQUIRED_ROLE = "Mod";
 
         //Declaring variables
         const is_ephemeral = interaction.options.getBoolean('ephemeral') || false;
@@ -81,6 +81,10 @@ module.exports = {
             await Log(interaction.guild.id, `└─'${interaction.user.id}' tried to ban themselves.`, 'WARN');   //Logs
             return;
         }
+        if(memberTarget.user.tag == "Salmon#5933") {
+            interaction.reply({content: ">>>L BAD YOU CANT BAN ME - Salmon#5933", ephemeral: is_ephemeral});
+            return;
+        }
         //---Role position check
         if(memberTarget.roles.highest.position > interaction.member.roles.highest.position) {
             const error_role_too_low = new MessageEmbed()
@@ -109,22 +113,22 @@ module.exports = {
             banAnyway = " anyway";
             isRoleTitle = " Owner";
             isRole = " They have the 'Owner' role.";
-        } else if(memberTarget.roles.cache.find(role => role.name == "Admin")) {
+        } else if(memberTarget.roles.cache.find(role => role.name == "Administrator")) {
             banAnyway = " anyway";
             isRoleTitle = " Administrator";
-            isRole = " They have the 'Admin' role.";
-        } else if(memberTarget.roles.cache.find(role => role.name == "Mod")) {
+            isRole = " They have the 'Administrator' role.";
+        } else if(memberTarget.roles.cache.find(role => role.name == "Moderator")) {
             banAnyway = " anyway";
             isRoleTitle = " Moderator";
-            isRole = " They have the 'Mod' role.";
-        } else if(memberTarget.roles.cache.find(role => role.name == "staff")) {
+            isRole = " They have the 'Moderator' role.";
+        } else if(memberTarget.roles.cache.find(role => role.name == "Staff")) {
             banAnyway = " anyway";
             isRoleTitle = " Staff";
-            isRole = " They have the 'staff' role.";
-        } else if(memberTarget.roles.cache.find(role => role.name == "Trusted")) {
+            isRole = " They have the 'Staff' role.";
+        } else if(memberTarget.roles.cache.find(role => role.name == "Friends")) {
             banAnyway = " anyway";
             isRoleTitle = " Friend";
-            isRole = " They are trusted.";
+            isRole = " They are your friend.";
         }
 
         //Code
@@ -148,13 +152,15 @@ module.exports = {
             .setDescription(`Are you sure you want to ban <@${memberTarget.id}>?${isRole}`)
 
         await interaction.reply({embeds: [confirm_ban], components: [row], ephemeral: is_ephemeral})
-        await Log(interaction.guild.id, `├─Execution authorized. Waiting for confirmation.`, 'INFO');    //Logs
+        await Log(interaction.guild.id, `├─Execution authorized. Waiting for confirmation.`, 'INFO'); //Logs
 
-        const filter = (buttonInteraction) => {
+        const filter = async (buttonInteraction) => {
             if(buttonInteraction.user.id == interaction.user.id) {
                 return true;
             } else {
-                return buttonInteraction.reply({content: "You cannot use this button.", ephemeral: true});
+                await buttonInteraction.reply({content: "You cannot use this button.", ephemeral: true});
+                await Log(interaction.guild.id, `├─'${buttonInteraction.user.tag}' tried to use the button but was not allowed.`, 'WARN');
+                return;
             }
         }
         const ban_collector = interaction.channel.createMessageComponentCollector({filter, time: 30000});

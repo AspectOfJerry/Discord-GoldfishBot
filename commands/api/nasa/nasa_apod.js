@@ -1,6 +1,9 @@
 const {Client, Intents, Collection, MessageEmbed} = require('discord.js');
 const {SlashCommandBuilder} = require("@discordjs/builders");
-const fetch = require('node-fetch@2')
+const fetch = require('node-fetch');
+
+const Sleep = require('../../../modules/sleep'); //delayInMilliseconds;
+const Log = require('../../../modules/logger'); //DEBUG, ERROR, FATAL, INFO, LOG, WARN; │, ─, ├─, └─;
 
 const jerry_nasa_api_key = process.env.NASA_API_KEY_JERRY;
 
@@ -15,10 +18,12 @@ module.exports = {
                 .setRequired(false)),
     async execute(client, interaction) {
         //Command information
+        await Log(interaction.guild.id, `'${interaction.user.tag}' executed '/nasa_apod'.`, 'INFO');
         const REQUIRED_ROLE = "everyone";
 
         //Declaring variables
         const is_ephemeral = interaction.options.getBoolean('ephemeral') || false;
+        await Log(interaction.guild.id, `├─ephemeral: ${is_ephemeral}`, 'INFO'); //Logs
         const nasa_logo_red_hex = '#0b3d91'
         let apod_date;
         let apod_explanation;
@@ -32,44 +37,42 @@ module.exports = {
         //API request
         await fetch(`https://api.nasa.gov/planetary/apod?api_key=${jerry_nasa_api_key}`)
             .then(res => res.json())
-            .then(data => {
-                if(data.error) {
+            .then(res => {
+                if(res.error) {
                     const request_error = new MessageEmbed()
                         .setColor('RED')
                         .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
                         .setTitle("Error")
                         .setDescription("An error occured while trying to fetch the APOD from NASA. Please try again later.")
-                        .addField(`Error code:`, `${data.error.code}`, false)
-                        .addField(`Description`, `${data.error.message}`, false)
+                        .addField(`Error code:`, `${res.error.code}`, false)
+                        .addField(`Description`, `${res.error.message}`, false)
 
                     interaction.reply({embeds: [request_error], ephemeral: is_ephemeral});
                     return;
                 }
 
-                const response = data;
-                if(data.hdurl) {
-                    apod_image_url = response.hdurl;
-                } else if(data.thumbnail_url) {
-                    apod_image_url = response.thumbnail_url;
+                if(res.hdurl) {
+                    apod_image_url = res.hdurl;
+                } else if(res.thumbnail_url) {
+                    apod_image_url = res.thumbnail_url;
                 }
 
-                if(data.media_type == "image") {
-                    apod_image_url = response.hdurl;
-                } else if(data.media_type == "video") {
-                    apod_image_url = response.thumbnail_url;
+                if(res.media_type == "image") {
+                    apod_image_url = res.hdurl;
+                } else if(res.media_type == "video") {
+                    apod_image_url = res.thumbnail_url;
                 }
 
-                apod_date = response.date;
-                apod_explanation = response.explanation;
-                apod_url = response.url;
-                apod_title = response.title;
+                apod_date = res.date;
+                apod_explanation = res.explanation;
+                apod_url = res.url;
+                apod_title = res.title;
             })
 
         const nasa_apod = new MessageEmbed()
             .setColor(nasa_logo_red_hex)
-            .setAuthor({name: "NASA APOD", url: "https://apod.nasa.gov/apod/astropix.html", iconURL: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e5/NASA_logo.svg/110px-NASA_logo.svg.png"})
             .setTitle(`NASA Astronomy Picture of the Day (APOD)`)
-            .setURL(`${apod_url}`)
+            .setURL(`https://apod.nasa.gov/apod/astropix.html`)
             .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
             .setDescription(`${apod_explanation}`)
             .addField(`Title`, `${apod_title}`, true)

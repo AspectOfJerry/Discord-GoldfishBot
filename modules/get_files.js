@@ -8,6 +8,13 @@ const GetFiles = (dir, file_suffix) => {
     let command_files = []
 
     for(const file of files) {
+        if(file.name.endsWith(".subcommand.js")) {
+            console.log(`${file.name} => subcommand`);
+            continue;
+        } else if(file.name.endsWith(".todo")) {
+            console.log(`${file.name} => todo`);
+            continue;
+        }
         if(file.isDirectory()) {
             command_files = [
                 ...command_files,

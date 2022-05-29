@@ -11,12 +11,12 @@ module.exports = {
         .addChannelOption((options) =>
             options
                 .setName('channel')
-                .setDescription("The targeted channel to move to.")
+                .setDescription("[REQUIRED] The targeted channel to move to.")
                 .setRequired(true))
         .addUserOption((options) =>
             options
                 .setName('user')
-                .setDescription("The user to move. Defaults to yourself.")
+                .setDescription("[OPTIONAL] The user to move. Defaults to yourself.")
                 .setRequired(false))
         .addBooleanOption((options) =>
             options
@@ -29,15 +29,19 @@ module.exports = {
                 .setDescription("[OPTIONAL] Whether you want the bot's messages to only be visible to yourself. Defaults to false.")
                 .setRequired(false)),
     async execute(client, interaction) {
+        await Log(interaction.guild.id, `'${interaction.user.tag}' executed '/move'.`, 'INFO')
         //Command information
         const REQUIRED_ROLE = "staff";
 
         //Declaring variables
-        const is_ephemeral = interaction.options.getBoolean('ephemeral') || false || false;
+        const is_ephemeral = interaction.options.getBoolean('ephemeral') || false;
+        await Log(interaction.guild.id, `├─ephemeral: ${is_ephemeral}`, 'INFO'); //Logs
         const target = interaction.options.getUser('user') || interaction.user;
         const memberTarget = interaction.guild.members.cache.get(target.id);
+        await Log(interaction.guild.id, `├─memberTarget: '${memberTarget.user.tag}'`, 'INFO');
 
-        const isAll = interaction.options.getBoolean('all') || false;
+        const is_all = interaction.options.getBoolean('all') || false;
+        await Log(interaction.guild.id, `├─is_all: ${is_all}`, 'INFO');
         const new_voice_channel = interaction.options.getChannel('channel');
 
         //Checks
@@ -63,7 +67,7 @@ module.exports = {
         }
 
         //Code
-        if(!isAll) {
+        if(!is_all) {
             const current_voice_channel = memberTarget.voice.channel;
             memberTarget.voice.setChannel(new_voice_channel)
                 .then(() => {
@@ -93,7 +97,7 @@ module.exports = {
                             .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
                             .setDescription(`Successfully moved <@${member.id}> from ${current_voice_channel} to ${new_voice_channel}.`);
 
-                        interaction.channel.send({embeds: [move_success], ephemeral: is_ephemeral});
+                        interaction.followUp({embeds: [move_success], ephemeral: is_ephemeral});
                     })
             })
         }
