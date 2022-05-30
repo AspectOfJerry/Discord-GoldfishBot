@@ -31,5 +31,6 @@ module.exports = {
                 }
             }
         })();
+        client.user.setPresence({status: 'dnd'});
     }
 }
