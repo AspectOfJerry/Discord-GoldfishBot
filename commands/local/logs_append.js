@@ -21,7 +21,7 @@ module.exports = {
     async execute(client, interaction) {
         //Command information
         await Log(interaction.guild.id, `'${interaction.user.tag}' executed '/logs_append'.`, 'INFO');
-        const REQUIRED_ROLE = "staff";
+        const REQUIRED_ROLE = "Friends";
 
         //Declaring variables
         const is_ephemeral = interaction.options.getBoolean('ephemeral') || false;
@@ -30,7 +30,7 @@ module.exports = {
         const string = interaction.options.getString('string');
         await Log(interaction.guild.id, `└─string: ${string}`, 'INFO');  //Logs
 
-        const object = Log(string, 'LOG', true);
+        const object = Log(interaction.guild.id, string, 'LOG', true);
 
         //Checks
         if(!interaction.member.roles.cache.find(role => role.name == REQUIRED_ROLE)) {
