@@ -7,7 +7,7 @@ require('dotenv').config();
 const process = require('process');
 
 const Sleep = require('./modules/sleep');
-const Log = require('./modules/logger');
+// const Log = require('./modules/logger');
 
 /*
     random hello message to logs

@@ -2,7 +2,7 @@ const {REST} = require('@discordjs/rest');
 const {Routes} = require('discord-api-types/v9');
 
 const Sleep = require('../modules/sleep'); //delayInMilliseconds;
-const Log = require('../modules/logger'); //DEBUG, ERROR, FATAL, INFO, LOG, WARN; │, ─, ├─, └─;
+// const Log = require('../modules/logger'); //DEBUG, ERROR, FATAL, INFO, LOG, WARN; │, ─, ├─, └─;
 
 require('dotenv').config();
 

@@ -1,3 +1,3 @@
 # DiscordBot-Goldfish-Bot
 ## Do not contribute
-Do not contribute to this project unless you have been told to.
+Do not contribute to this project.
