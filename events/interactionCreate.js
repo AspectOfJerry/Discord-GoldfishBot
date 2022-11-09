@@ -17,13 +17,6 @@ module.exports = {
             return;
         }
         try {
-            // const embed = new MessageEmbed()
-            //     .setColor('RED')
-            //     .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
-            //     .addField('Warning', `<@${interaction.user.id}>, This bot is deprecated and is replaced by JerryBot. This bot's commands will be removed in the future.`, false)
-            //     .setFooter({text: "The command will be executed after this message."})
-
-            // await interaction.channel.send({embeds: [embed]});
             await command.execute(interaction.client, interaction);
         } catch(err) {
             if(err) {
@@ -45,7 +38,6 @@ module.exports = {
                             await interaction.channel.send({embeds: [execute_error], ephemeral: false});
                             return;
                         } catch {
-                            console.log("Could not send an error message in the text channel.");
                             return;
                         }
                     }
@@ -53,4 +45,4 @@ module.exports = {
             }
         }
     }
-}
+};

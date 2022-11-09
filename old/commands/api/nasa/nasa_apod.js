@@ -2,7 +2,7 @@ const {Client, Intents, Collection, MessageEmbed} = require('discord.js');
 const {SlashCommandBuilder} = require("@discordjs/builders");
 const fetch = require('node-fetch');
 
-const Sleep = require('../../../modules/sleep'); //delayInMilliseconds;
+const Sleep = require('../../../../modules/sleep'); //delayInMilliseconds;
 // const Log = require('../../../modules/logger'); //DEBUG, ERROR, FATAL, INFO, LOG, WARN; │, ─, ├─, └─;
 
 const jerry_nasa_api_key = process.env.NASA_API_KEY_JERRY;

@@ -28,7 +28,7 @@ module.exports = {
             .addField('Requested at', `${interaction.createdAt}`, false)
             .setFooter({text: "The NodeJS process will exit after this message."});
 
-        await interaction.editReply({embeds: [stopping_bot]});
+        await interaction.reply({embeds: [stopping_bot]});
         await Sleep(100);
         await client.destroy();
         await Sleep(250);
