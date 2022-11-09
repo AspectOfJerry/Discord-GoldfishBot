@@ -30,6 +30,6 @@ module.exports = {
         //Checks
 
         //Code
-        interaction.reply({content: "Nothing here for now...", ephemeral: is_ephemeral});
+        interaction.reply({content: "Nothing here...", ephemeral: is_ephemeral});
     }
 }
